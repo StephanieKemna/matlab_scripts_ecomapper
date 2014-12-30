@@ -48,7 +48,7 @@ maxLat = max(data(:,2));
 %             longitude, latitude,  depth
 zi = griddata(data(:,1), data(:,2), data(:,3), X, Y);
 
-%% figure
+%% prepare figure
 figure('Position',[0 0 1400 1200])
 hold on
 
@@ -57,16 +57,20 @@ hold on
 mapshow(A,R);
 axis([R.Lonlim(1) R.Lonlim(2) R.Latlim(1) R.Latlim(2)])
 
+%% plot interpolated data
 scatter(X(:),Y(:),10,zi(:))
-colorbar;
+
+%% finish figure
+cb = colorbar;
 minDepth = min(data(:,3));
 maxDepth = max(data(:,3));
 caxis([minDepth maxDepth])
+set(get(cb,'Title'),'String','Depth (m)');
 
-% finish figure
 title([location ' interpolated EM measured lake depth'])
 ylabel('latitude')
 xlabel('longitude')
+
 % make all text in the figure to size 16
 set(gca,'FontSize',16)
 set(findall(gcf,'type','text'),'FontSize',16)

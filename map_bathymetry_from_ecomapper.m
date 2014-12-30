@@ -55,10 +55,11 @@ scatter( data(:,1), data(:,2), 10, data(:,3), 'filled');
 title([location ' EM measured lake depth'])
 ylabel('latitude')
 xlabel('longitude')
-colorbar;
+cb = colorbar;
 minDepth = min(data(:,3));
 maxDepth = max(data(:,3));
 caxis([minDepth maxDepth]);
+set(get(cb,'Title'),'String','Depth (m)');
 % make all text in the figure to size 16
 set(gca,'FontSize',16)
 set(findall(gcf,'type','text'),'FontSize',16)
