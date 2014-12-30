@@ -13,6 +13,8 @@
 % Institution: University of Southern California
 % Date: Dec 30, 2014
 %
+% tested with MatlabR2012a on Ubuntu 14.04
+%
 function [] = map_puddingstone_depth_interpolated (mapfile, data_path_prefix)
 
 %% check arguments, construct bathy file(name)
@@ -22,7 +24,7 @@ end
 if nargin < 2
     data_path_prefix = '~/data_em/logs/';
 end
-filename = [data_path_prefix 'bathy.mat'];
+filename = [data_path_prefix 'bathy_puddingstone.mat'];
  
 % create data file if necessary
 if ~exist(filename)

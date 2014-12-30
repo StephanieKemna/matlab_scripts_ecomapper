@@ -1,17 +1,33 @@
-function [] = compile_all_bathy(data_path_prefix)
+%
+% function [] = compile_all_bathy(data_path_prefix, lakename)
+% Create a bathy.mat file from grabbing all data from EcoMapper log files
+% for the specified location.
+%  default data_path_prefix: '~/data_em/logs/';
+%  default location: 'puddingstone';
+%
+% Author: Stephanie Kemna
+% Institution: University of Southern California
+% Date: Dec 30, 2014
+%
+% tested with MatlabR2012a on Ubuntu 14.04
+%
+function [] = compile_all_bathy(data_path_prefix, location)
 
 if nargin < 1
     data_path_prefix = '~/data_em/logs/';
 end
+if nargin < 2
+    location = 'puddingstone';
+end
 
-filename = [data_path_prefix 'bathy.mat'];
+filename = [data_path_prefix 'bathy_' location '.mat'];
 if exist(filename)
     disp('bathy file already exists, returning');
     return
 end
 
 cnt = 0;
-pudd = dir([data_path_prefix 'puddingstone_*']);
+pudd = dir([data_path_prefix location '_*']);
 for idx = 1:size(pudd,1)
     
     logfiles = dir(fullfile(data_path_prefix,pudd(idx).name,'*.log'));
