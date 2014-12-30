@@ -1,5 +1,5 @@
 %
-% function [] = map_puddingstone_depth_interpolated (mapfile, data_path_prefix)
+% function [] = map_puddingstone_depth_interpolated (mapfile, data_path_prefix, location)
 % Plot an interpolated grid of the bathymetry data measured by the
 % EcoMapper
 %  default mapfile: '~/Maps/puddingstone/puddingstone_dam_extended.tiff'
@@ -33,7 +33,7 @@ filename = [data_path_prefix 'bathy_' location '.mat'];
 % create data file if necessary
 if ~exist(filename)
     disp('bathy file non-existent, calling compile_all_bathy');
-    compile_all_bathy()
+    compile_all_bathy(data_path_prefix, location)
 end
 
 %% prepare figure

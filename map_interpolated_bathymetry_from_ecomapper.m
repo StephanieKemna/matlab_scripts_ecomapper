@@ -1,9 +1,10 @@
 %
-% function [] = map_puddingstone_depth_interpolated (mapfile, data_path_prefix)
+% function [] = map_puddingstone_depth_interpolated (mapfile, data_path_prefix, location)
 % Plot an interpolated grid of the bathymetry data measured by the
 % EcoMapper
 %  default mapfile: '~/Maps/puddingstone/puddingstone_dam_extended.tiff'
 %  default data_path_prefix: '~/data_em/logs/';
+%  default location: 'puddingstone'
 %
 % nb. this uses EM compass information, which has drift underwater,
 %     ie. there will be jumps on surfacing, and thus the at-depth readings 
@@ -15,7 +16,7 @@
 %
 % tested with MatlabR2012a on Ubuntu 14.04
 %
-function [] = map_interpolated_bathymetry_from_ecomapper (mapfile, data_path_prefix)
+function [] = map_interpolated_bathymetry_from_ecomapper (mapfile, data_path_prefix, location)
 
 %% check arguments, construct bathy file(name)
 if nargin < 1
@@ -24,12 +25,15 @@ end
 if nargin < 2
     data_path_prefix = '~/data_em/logs/';
 end
-filename = [data_path_prefix 'bathy_puddingstone.mat'];
+if nargin < 3
+    location = 'puddingstone';
+end
+filename = [data_path_prefix 'bathy_' location '.mat'];
  
 % create data file if necessary
 if ~exist(filename)
     disp('bathy file non-existent, calling compile_all_bathy');
-    compile_all_bathy()
+    compile_all_bathy(data_path_prefix, location)
 end
 
 %% load data
