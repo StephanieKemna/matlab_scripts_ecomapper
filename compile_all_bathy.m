@@ -27,15 +27,21 @@ if exist(filename)
 end
 
 cnt = 0;
+% get all subfolders
 pudd = dir([data_path_prefix location '_*']);
 for idx = 1:size(pudd,1)
     
+    % get all log files in folder
     logfiles = dir(fullfile(data_path_prefix,pudd(idx).name,'*.log'));
     for idy = 1:size(logfiles,1)
+        % feedback to user about what's being included
         disp(strcat('adding: ',logfiles(idy).name))
+        % get the data
         log = importdata(fullfile(data_path_prefix,pudd(idx).name,logfiles(idy).name),';');
         if ( isfield(log,'textdata') )
+            % grab only what we are interesting in, in this case:
             % textdata col 1: latitude, col 2: longitude, col 17: total water column
+            % (assumes EcoMapper standard log file format)
             lat = log.textdata(:,1);
             latitude = str2double(lat(2:size(lat,1)));
             lon = log.textdata(:,2);

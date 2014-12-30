@@ -11,11 +11,11 @@
 %
 % Author: Stephanie Kemna
 % Institution: University of Southern California
-% Date: Dec 30, 2014
+% Date: Initial work in 2013, finished Dec 30, 2014
 %
 % tested with MatlabR2012a on Ubuntu 14.04
 %
-function [] = map_puddingstone_depth_interpolated (mapfile, data_path_prefix)
+function [] = map_interpolated_bathymetry_from_ecomapper (mapfile, data_path_prefix)
 
 %% check arguments, construct bathy file(name)
 if nargin < 1
@@ -48,7 +48,7 @@ zi = griddata(data(:,1), data(:,2), data(:,3), X, Y);
 figure('Position',[0 0 1400 1200])
 hold on
 
-% add geo-referenced map of Puddingstone
+% add geo-referenced map as background
 [A, R] = geotiffread(mapfile);
 mapshow(A,R);
 axis([R.Lonlim(1) R.Lonlim(2) R.Latlim(1) R.Latlim(2)])
@@ -60,11 +60,11 @@ maxDepth = max(data(:,3));
 caxis([minDepth maxDepth])
 
 % finish figure
-title('Puddingstone interpolated bathymetry')
+title([location ' interpolated EM measured lake depth'])
 ylabel('latitude')
 xlabel('longitude')
-% make all text in the figure to size 14 and bold
+% make all text in the figure to size 16
 set(gca,'FontSize',16)
-set(findall(gcf,'type','text'),'FontSize',16) %,'fontWeight','bold')
+set(findall(gcf,'type','text'),'FontSize',16)
 
 end
