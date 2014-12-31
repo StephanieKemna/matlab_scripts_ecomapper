@@ -59,10 +59,14 @@ for idx = 1:size(pudd,1)
         longitude = cell2mat(log_data(2:end, lon_idx));
         odo = cell2mat(log_data(2:end, odo_idx));
         depth = cell2mat(log_data(2:end, dep_idx));        
-        time = cell2mat(log_data(2:end, time_idx));
-        date = cell2mat(log_data(2:end, date_idx));
+        time = log_data(2:end, time_idx);
+        date = log_data(2:end, date_idx);
         
         % TODO datenum(datestr([date1 ' ' time1]))
+        dnum = zeros(length(time),1);
+        for ( idx_dnum = 1:length(time) )
+          dnum(idx_dnum) = datenum(datestr([date{idx_dnum} ' ' time{idx_dnum}]));
+        end
         
         % some files have only 0s in the data, if so, this is likely
         % incorrect, so we discard the data
@@ -71,7 +75,7 @@ for idx = 1:size(pudd,1)
             % add current file's data points to big matrix
             for ( dat = 1:length(latitude) )
                 cnt = cnt+1;
-                data(cnt,:) = [longitude(dat) latitude(dat) odo(dat)];
+                data(cnt,:) = [longitude(dat) latitude(dat) odo(dat) dnum(dat) depth(dat)];
             end
         end
     end
