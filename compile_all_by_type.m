@@ -34,33 +34,12 @@ disp(['location: ' location])
 % construct file location / name
 filename = [data_path_prefix data_type '_' location '.mat'];
 if exist(filename,'file')
-    disp('bathy file already exists, returning');
+    disp([data_type ' file already exists, returning']);
     return
 end
 
 % prepare labels
-if (strcmp(data_type,'odo') == 1)
-    type_string = 'ODO mg/L';
-elseif (strcmp(data_type,'chl') == 1)
-    type_string = 'Chl ug/L';
-elseif (strcmp(data_type,'water_depth') == 1)
-    type_string = 'Total Water Column (m)';
-elseif (strcmp(data_type,'water_depth_dvl') == 1)
-    type_string = 'DVL -Water Column (m)';
-elseif (strcmp(data_type,'sp_cond') == 1)
-    type_string = 'SpCond mS/cm';
-elseif (strcmp(data_type,'sal') == 1)
-    type_string = 'Sal ppt';
-elseif (strcmp(data_type,'pH') == 1)
-    type_string = 'pH'; % note, this is not mV
-elseif (strcmp(data_type,'turb') == 1)
-    type_string = 'Turbid+ NTU';
-elseif (strcmp(data_type,'bga') == 1)
-    type_string = 'BGA-PC cells/mL';
-else
-    disp('Unknown data type. Options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga')
-    return
-end
+run em_prepare_labels
 
 %% read data
 % using csvimport (Ashish Sadanandan)
