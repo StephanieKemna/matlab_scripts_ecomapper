@@ -1,5 +1,5 @@
 %
-% function [] = plot_em_odo(matfilename, dd, mm, yyyy)
+% function [] = plot_em_odo_date(dd, mm, yyyy, matfilename)
 %   function to plot data from mat file, 
 %     create mat file from EcoMapper log file using compile_all_ODO.m
 %   choosing a specific date (specify via dd, mm, yyyy)
@@ -8,7 +8,16 @@
 % Institution: University of Southern California
 % Date: Dec 29, 2014
 %
-function [] = plot_em_odo_date(matfilename, dd, mm, yyyy)
+function [] = plot_em_odo_date(dd, mm, yyyy, matfilename)
+
+if nargin < 3
+    disp('Error!')
+    disp('Usage: plot_em_odo_date(dd, mm, yyyy, matfilename)');
+    return
+end
+if nargin < 4
+    matfilename = '~/data_em/logs/odo_puddingstone.mat';
+end
 
 % load the data
 load(matfilename);
