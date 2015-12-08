@@ -18,6 +18,7 @@ function [] = compile_all_by_type(data_type, data_path_prefix, location)
 if nargin < 1
     disp('Error, please provide data type.')
     disp('Options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga');
+    disp('Usage: compile_all_by_type(data_type, data_path_prefix=~/data_em/logs/, location=puddingstone');
     return
 end
 if nargin < 2
