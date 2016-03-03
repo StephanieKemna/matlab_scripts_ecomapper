@@ -1,8 +1,10 @@
 %
-% function [] = compile_all_by_type(data_type, data_path_prefix, location)
+% function [] = compile_all_by_type(data_type, folder, data_path_prefix, location)
 % Create a <type>.mat file from grabbing all data from EcoMapper log files
 % for the specified location.
 %  data_type, options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga
+%  default 'folder' (bool): 1 (choose 0 if you want to only process files
+%  within one folder)
 %  default data_path_prefix: '~/data_em/logs/'
 %  default location: 'puddingstone'
 %
@@ -12,7 +14,7 @@
 %
 % tested with MatlabR2012a on Ubuntu 14.04
 %
-function [] = compile_all_by_type(data_type, data_path_prefix, location)
+function [] = compile_all_by_type(data_type, multiple_folders, data_path_prefix, location)
 
 %% input / preparation
 if nargin < 1
@@ -22,14 +24,17 @@ if nargin < 1
     return
 end
 if nargin < 2
-    data_path_prefix = '~/data_em/logs/';
+    multiple_folders = 1;
 end
 if nargin < 3
+    data_path_prefix = '~/data_em/logs/';
+end
+if nargin < 4
     location = 'puddingstone';
 end
 disp('Using:')
 disp(['type: ' data_type])
-disp(['data_path_prefix' data_path_prefix])
+disp(['data_path_prefix: ' data_path_prefix])
 disp(['location: ' location])
 
 % construct file location / name
@@ -49,10 +54,18 @@ addpath('../csvimport/');
 
 cnt = 0;
 % get all subfolders
-pudd = dir([data_path_prefix location '_*']);
+if ( multiple_folders )
+    pudd = dir([data_path_prefix location '_*']);
+else
+    pudd = 1;
+end
 for idx = 1:size(pudd,1)
     % get all log files in folder
-    logfiles = dir(fullfile(data_path_prefix,pudd(idx).name,'*.log'));
+    if ( multiple_folders )
+        logfiles = dir(fullfile(data_path_prefix,pudd(idx).name,'*.log'));
+    else
+        logfiles = dir(fullfile(data_path_prefix,'*.log'))
+    end
     for idy = 1:size(logfiles,1)
         % feedback to user about what's being included
         disp(strcat('adding: ',logfiles(idy).name))
@@ -60,7 +73,11 @@ for idx = 1:size(pudd,1)
 
         % import the data into a big table, 
         % using csvimport (Ashish Sadanandan)
-        log_data = csvimport(fullfile(data_path_prefix,pudd(idx).name,logfiles(idy).name),'delimiter',';');
+        if ( multiple_folders )
+            log_data = csvimport(fullfile(data_path_prefix,pudd(idx).name,logfiles(idy).name),'delimiter',';');
+        else
+            log_data = csvimport(fullfile(data_path_prefix,logfiles(idy).name),'delimiter',';');
+        end
 
         % find the columns with lat, lon, ODO
         lat_idx = find(strcmp(log_data(1,:),'Latitude'),1);
@@ -89,9 +106,10 @@ for idx = 1:size(pudd,1)
         % some files have only 0s in the data, if so, this is likely
         % incorrect, so we discard the data
         % if we need the entries, we could adapt this later
+
         if ( max(desired_data) ~= 0 )
             % add current file's data points to big matrix
-            for ( dat = 1:length(latitude) )
+            for dat = 1:length(latitude)
                 cnt = cnt+1;
                 data(cnt,:) = [longitude(dat) latitude(dat) desired_data(dat) dnum(dat) depth(dat)];
             end
@@ -101,6 +119,10 @@ end
 
 %% save
 % store the lat/lon/ODO file
-save(filename,'data');
+if ( exist('data','var') == 1 )
+  save(filename,'data');
+else
+  disp('error, no data processed');
+end
 
 end
