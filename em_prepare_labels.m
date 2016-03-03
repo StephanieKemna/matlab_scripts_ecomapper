@@ -26,6 +26,12 @@ elseif (strcmp(data_type,'turb') == 1)
 elseif (strcmp(data_type,'bga') == 1)
     type_string = 'BGA-PC cells/mL';
     type_title_string = 'Blue-Green Algae (cells/mL)';
+elseif (strcmp(data_type,'temp') == 1)
+    type_string = 'Temperature (c)';
+    type_title_string = 'Temperature (C)';
+elseif (strcmp(data_type,'temp2') == 1)
+    type_string = 'Temp C';
+    type_title_string = 'Temperature (C)';
 else
     disp('Unknown data type. Options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga')
     return

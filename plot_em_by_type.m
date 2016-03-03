@@ -56,10 +56,12 @@ scatter(time_datenum, -depth, 30, em_data, 'filled');
 
 % finish figure
 c = colorbar;
-set(get(c,'Title'),'String','ODO (mg/L)');
-caxis([0 20])
-load('odo-cm.mat')
-colormap(cm)
+set(get(c,'Title'),'String',type_title_string);
+if ( strcmp(type_string,'odo') == 1)
+    caxis([0 20])
+    load('odo-cm.mat')
+    colormap(cm)
+end
 
 xlabel('time (yymmdd)')
 ylabel('depth (m)')
