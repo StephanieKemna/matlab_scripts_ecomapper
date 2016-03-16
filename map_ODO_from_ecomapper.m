@@ -28,11 +28,11 @@ end
 if nargin < 3
     location = 'puddingstone';
 end
-filename = [data_path_prefix 'ODO_' location '.mat'];
+filename = [data_path_prefix 'odo_' location '.mat'];
 
 % create data file if necessary
 if ~exist(filename)
-    disp('bathy file non-existent, calling compile_all_bathy');
+    disp('ODO file non-existent, calling compile_all_bathy');
     compile_all_bathy(data_path_prefix, location)
 end
 
