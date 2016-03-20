@@ -110,7 +110,7 @@ for idx = 1:size(pudd,1)
 
         if ( max(desired_data) ~= 0 )
             % add current file's data points to big matrix
-            for dat = 1:length(latitude)
+            for dat = 1:length(desired_data)
                 cnt = cnt+1;
                 data(cnt,:) = [longitude(dat) latitude(dat) desired_data(dat) dnum(dat) depth(dat)];
             end

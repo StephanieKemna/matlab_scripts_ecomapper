@@ -40,14 +40,18 @@ filename = [data_path_prefix data_type '_' location '.mat'];
 % create data file if necessary
 if ~exist(filename,'file')
     disp('data file non-existent, calling compile_all_by_type');
-    compile_all_by_type(data_type, data_path_prefix, location)
+    compile_all_by_type(data_type, data_path_prefix, 0, location)
+end
+if ~exist(filename,'file')
+    disp('data file still non-existent, not plotting');
+    return;
 end
 
 % prepare labels
 run em_prepare_labels
 
 %% prepare figure
-figure('Position',[0 0 1400 1200])
+fig_h = figure('Position',[0 0 1400 1200]);
 hold on
 
 % add geo-referenced map as background
@@ -56,9 +60,11 @@ mapshow(A,R);
 axis([R.Lonlim(1) R.Lonlim(2) R.Latlim(1) R.Latlim(2)])
 
 %% load data
+disp(['Loading data for: ' data_type]);
 load(filename);
 
 %% plot bathy colors
+disp(['Creating scatter plot for: ' data_type]);
 scatter( data(:,1), data(:,2), 10, data(:,3), 'filled');
 
 %% finish figure
@@ -66,12 +72,35 @@ title([location ' EM measured ' type_title_string])
 ylabel('latitude')
 xlabel('longitude')
 cb = colorbar;
-minDepth = min(data(:,3));
-maxDepth = max(data(:,3));
-caxis([minDepth maxDepth]);
-set(get(cb,'Title'),'String','Depth (m)');
+
+if ( strcmp(data_type,'odo') == 1 )
+    caxis([0 20])
+    load('odo-cm.mat')
+    colormap(cm)
+elseif ( strcmp(data_type,'water_depth') == 1 || strcmp(data_type,'water_depth_dvl') == 1 )
+    cx = caxis;
+    if ( strcmp(location,'puddingstone')  == 1 && cx(2) > 25 )
+        caxis([0 25]);
+    end
+else
+    caxis([min(data(:,3)) max(data(:,3))])
+end
+
+set(get(cb,'Title'),'String',type_title_string);
+
 % make all text in the figure to size 16
 set(gca,'FontSize',16)
 set(findall(gcf,'type','text'),'FontSize',16)
+
+%% save file
+disp(['Save figures for: ' data_type]);
+current_time = clock; % year m dd hh mm ss.ssssss struct
+set(gcf,'PaperUnits','inches','PaperPosition',[0 0 20 12])
+time_string = [ '' sprintf('%4.4d',current_time(1)) sprintf('%2.2d',current_time(2)) ...
+                sprintf('%2.2d',current_time(3)) '_' sprintf('%2.2d',current_time(4)) ...
+                sprintf('%2.2d',current_time(5)) sprintf('%02.0f',current_time(5)) ];
+print('-djpeg','-r100',[data_path_prefix time_string '_' location '_map_' data_type])
+% save fig
+saveas(fig_h, [data_path_prefix time_string '_' location '_map_' data_type], 'fig');
 
 end
