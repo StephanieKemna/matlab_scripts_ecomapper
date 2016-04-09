@@ -83,7 +83,6 @@ for idx = 1:size(pudd,1)
         % find the columns with lat, lon, ODO
         lat_idx = find(strcmp(log_data(1,:),'Latitude'),1);
         lon_idx = find(strcmp(log_data(1,:),'Longitude'),1);
-
         desired_data_idx = find(strcmp(log_data(1,:),type_string),1);
 
         dep_idx = find(strcmp(log_data(1,:),'DFS Depth (m)'),1);
@@ -94,7 +93,6 @@ for idx = 1:size(pudd,1)
         % note: assuming data are numeric
         latitude = cell2mat(log_data(2:end,lat_idx));
         longitude = cell2mat(log_data(2:end, lon_idx));
-        desired_data = cell2mat(log_data(2:end, desired_data_idx));
         depth = cell2mat(log_data(2:end, dep_idx));        
         time = log_data(2:end, time_idx);
         date = log_data(2:end, date_idx);
@@ -103,11 +101,26 @@ for idx = 1:size(pudd,1)
         for ( idx_dnum = 1:length(time) )
           dnum(idx_dnum) = datenum(datestr([date{idx_dnum} ' ' time{idx_dnum}]));
         end
+
+        % convert cells,
+        % but check if there are gaps in the data, and if so, filter out
+        desired_data_cells = log_data(2:end, desired_data_idx);
+        if ( sum(cellfun(@isempty,desired_data_cells)) == 0 )
+            desired_data = cell2mat(desired_data_cells);
+        else
+            cell_mask = ~cellfun(@isempty,desired_data_cells);
+            
+            % filter the data
+            latitude = latitude(cell_mask);
+            longitude = longitude(cell_mask);
+            desired_data = cellfun(@str2num,desired_data_cells(cell_mask));
+            depth = depth(cell_mask);
+            dnum = dnum(cell_mask);
+        end
         
         % some files have only 0s in the data, if so, this is likely
         % incorrect, so we discard the data
         % if we need the entries, we could adapt this later
-
         if ( max(desired_data) ~= 0 )
             % add current file's data points to big matrix
             for dat = 1:length(desired_data)

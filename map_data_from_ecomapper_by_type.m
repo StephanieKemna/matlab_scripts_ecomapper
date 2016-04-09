@@ -83,7 +83,9 @@ elseif ( strcmp(data_type,'water_depth') == 1 || strcmp(data_type,'water_depth_d
         caxis([0 25]);
     end
 else
-    caxis([min(data(:,3)) max(data(:,3))])
+    if ( min(data(:,3)) ~= max(data(:,3)) )
+        caxis([min(data(:,3)) max(data(:,3))])
+    end
 end
 
 set(get(cb,'Title'),'String',type_title_string);
