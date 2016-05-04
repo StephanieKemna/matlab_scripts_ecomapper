@@ -1,16 +1,18 @@
 %
-% function [] = plot_em_by_type(data_type,data_path_prefix, location)
+% function [] = plot_em_by_type(data_type,data_path_prefix, b_localtime, b_dst, location)
 %   function to plot data from mat file, 
 %     create mat file from EcoMapper log file using compile_all_ODO.m
 %  data_type, options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga
 %  default data_path_prefix: '~/data_em/logs/'
 %  default location: 'puddingstone
+%  b_localtime: convert UTC to local time? (0 or 1, default: 0)
+%  b_dst: use Daylight Savings Time (if b_localtime)? (0 or 1, default: 0)
 %
 % Author: Stephanie Kemna
 % Institution: University of Southern California
-% Date: Apr 22, 2015
+% Date: Apr 22, 2015 - May 2016
 %
-function [] = plot_em_by_type(data_type,data_path_prefix, location)
+function [] = plot_em_by_type(data_type, data_path_prefix, location, b_localtime, b_dst)
 
 %% input/preparation
 if nargin < 1
@@ -20,7 +22,15 @@ if nargin < 1
 end
 if nargin < 2
     data_path_prefix = '~/data_em/logs/';
+end
+if nargin < 3
     location = 'puddingstone';
+end
+if nargin < 4
+    b_localtime = 0;
+end
+if nargin < 5
+    b_dst = 0;
 end
 
 % prepare labels
@@ -32,7 +42,7 @@ filename = [data_path_prefix data_type '_' location '.mat']
 % create data file if necessary
 if ~exist(filename,'file')
     disp('data file non-existent, calling compile_all_by_type');
-    compile_all_by_type(data_type, data_path_prefix, 0, location)
+    compile_all_by_type(data_type, data_path_prefix, 0, location, b_localtime, b_dst)
 end
 if ~exist(filename,'file')
     disp('data file still non-existent, not plotting');
@@ -75,9 +85,9 @@ elseif ( strcmp(data_type,'water_depth') == 1 || strcmp(data_type,'water_depth_d
 end
 
 
-xlabel('time (yymmdd)')
+xlabel('time (yyyy-mm-dd hh:mm:ss)')
 ylabel('depth (m)')
-datetick('x','yymmddHHMMSS')
+datetick('x','yyyy-mm-dd HH:MM:SS')
 
 h = title(filename(1:end-4));
 set(h,'interpreter','none')
@@ -87,14 +97,16 @@ set(gca,'FontSize',16);
 set(findall(gcf,'type','text'),'FontSize',16);
 
 %% save file
+% prefix by date of trial
+first_date = time_datenum(1);
+fd_datestr = datestr(first_date);
+prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
+
 % save jpeg
-current_time = clock; % year m dd hh mm ss.ssssss struct
 set(gcf,'PaperUnits','inches','PaperPosition',[0 0 20 12])
-time_string = [ '' sprintf('%4.4d',current_time(1)) sprintf('%2.2d',current_time(2)) ...
-                sprintf('%2.2d',current_time(3)) '_' sprintf('%2.2d',current_time(4)) ...
-                sprintf('%2.2d',current_time(5)) sprintf('%02.0f',current_time(5)) ];
-print('-djpeg','-r100',[data_path_prefix time_string '_' location '_plot_' data_type])
+print('-djpeg','-r100',[data_path_prefix location '_' prefix '_plot_' data_type])
+
 % save fig
-saveas(fig_h, [data_path_prefix time_string '_' location '_plot_' data_type], 'fig');
+saveas(fig_h, [data_path_prefix location '_' prefix '_plot_' data_type], 'fig');
 
 end

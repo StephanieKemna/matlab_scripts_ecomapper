@@ -6,6 +6,8 @@
 %  default mapfile: '~/Maps/puddingstone/puddingstone_dam_extended.tiff'
 %  default data_path_prefix: '~/data_em/logs/'
 %  default location: 'puddingstone'
+%  b_localtime: convert UTC to local time? (0 or 1, default: 0)
+%  b_dst: use Daylight Savings Time (if b_localtime)? (0 or 1, default: 0)
 %
 % nb. this uses EM compass information, which has drift underwater,
 %     ie. there will be jumps on surfacing, and thus the at-depth readings 
@@ -17,7 +19,7 @@
 %
 % tested with MatlabR2012a on Ubuntu 14.04
 %
-function [] = map_data_from_ecomapper_by_type (data_type, mapfile, data_path_prefix, location)
+function [] = map_data_from_ecomapper_by_type (data_type, mapfile, data_path_prefix, location, b_localtime, b_dst)
 
 %% check arguments, construct bathy file(name)
 if nargin < 1
@@ -34,13 +36,19 @@ end
 if nargin < 4
     location = 'puddingstone';
 end
+if nargin < 5
+    b_localtime = 0;
+end
+if nargin < 6
+    b_dst = 0;
+end
 
 filename = [data_path_prefix data_type '_' location '.mat'];
 
 % create data file if necessary
 if ~exist(filename,'file')
     disp('data file non-existent, calling compile_all_by_type');
-    compile_all_by_type(data_type, data_path_prefix, 0, location)
+    compile_all_by_type(data_type, data_path_prefix, 0, location, b_localtime, b_dst)
 end
 if ~exist(filename,'file')
     disp('data file still non-existent, not plotting');

@@ -1,5 +1,5 @@
 %
-% function [] = compile_all_by_type(data_type, folder, data_path_prefix, location)
+% function [] = compile_all_by_type(data_type, folder, data_path_prefix, location, b_localtime, b_dst)
 % Create a <type>.mat file from grabbing all data from EcoMapper log files
 % for the specified location.
 %  data_type, options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga
@@ -7,14 +7,16 @@
 %  default multiple_folders? (bool): 0 (process one folder, choose 1 for
 %  processing multiple)
 %  default location: 'puddingstone'
+%  default b_localtime: 0 (false, using UTC time)
+%  default b_dst: 0 (false, not on daylight-savings-time)
 %
 % Author: Stephanie Kemna
 % Institution: University of Southern California
-% Date: Apr 22, 2015
+% Date: Apr 22, 2015 - May 2016
 %
 % tested with MatlabR2012a on Ubuntu 14.04
 %
-function [] = compile_all_by_type(data_type, data_path_prefix, multiple_folders, location)
+function [] = compile_all_by_type(data_type, data_path_prefix, multiple_folders, location, b_localtime, b_dst)
 
 %% input / preparation
 if nargin < 1
@@ -32,11 +34,19 @@ end
 if nargin < 4
     location = 'puddingstone';
 end
+if nargin < 5
+    b_localtime = 0;
+end
+if nargin < 6
+    b_dst = 0;
+end
 disp('Using:')
 disp(['type: ' data_type])
 disp(['data_path_prefix: ' data_path_prefix])
 disp(['multiple folders? ' num2str(multiple_folders)])
 disp(['location: ' location])
+disp(['local time (bool): ' num2str(b_localtime)])
+disp(['DST (bool): ' num2str(b_dst)])
 
 % construct file location / name
 filename = [data_path_prefix data_type '_' location '.mat'];
@@ -101,8 +111,21 @@ for idx = 1:size(pudd,1)
         for ( idx_dnum = 1:length(time) )
           dnum(idx_dnum) = datenum(datestr([date{idx_dnum} ' ' time{idx_dnum}]));
         end
-
-        % convert cells,
+        
+        % time on EM is now stored as UTC - convert to local?
+        if ( b_localtime ) 
+            hour = 1/24;
+            if ( b_dst ) 
+                offset = -7*hour;
+            else
+                offset = -8*hour;
+            end
+            time_fixed = dnum + offset;    
+        else
+            time_fixed = dnum;
+        end
+        
+        % convert cells to numbers,
         % but check if there are gaps in the data, and if so, filter out
         desired_data_cells = log_data(2:end, desired_data_idx);
         if ( sum(cellfun(@isempty,desired_data_cells)) == 0 )
@@ -115,7 +138,7 @@ for idx = 1:size(pudd,1)
             longitude = longitude(cell_mask);
             desired_data = cellfun(@str2num,desired_data_cells(cell_mask));
             depth = depth(cell_mask);
-            dnum = dnum(cell_mask);
+            time_fixed = time_fixed(cell_mask);
         end
         
         % some files have only 0s in the data, if so, this is likely
@@ -125,7 +148,7 @@ for idx = 1:size(pudd,1)
             % add current file's data points to big matrix
             for dat = 1:length(desired_data)
                 cnt = cnt+1;
-                data(cnt,:) = [longitude(dat) latitude(dat) desired_data(dat) dnum(dat) depth(dat)];
+                data(cnt,:) = [longitude(dat) latitude(dat) desired_data(dat) time_fixed(dat) depth(dat)];
             end
         else
             disp('max of data to store is 0, not storing');
