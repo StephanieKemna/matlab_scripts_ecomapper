@@ -97,6 +97,7 @@ set(gca,'FontSize',16);
 set(findall(gcf,'type','text'),'FontSize',16);
 
 %% save file
+disp(['Save figures for: ' data_type]);
 % prefix by date of trial
 first_date = time_datenum(1);
 fd_datestr = datestr(first_date);
