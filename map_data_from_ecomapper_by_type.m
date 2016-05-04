@@ -104,13 +104,16 @@ set(findall(gcf,'type','text'),'FontSize',16)
 
 %% save file
 disp(['Save figures for: ' data_type]);
-current_time = clock; % year m dd hh mm ss.ssssss struct
+% prefix by date of trial
+first_date = time_datenum(1);
+fd_datestr = datestr(first_date);
+prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
+
+% save jpeg
 set(gcf,'PaperUnits','inches','PaperPosition',[0 0 20 12])
-time_string = [ '' sprintf('%4.4d',current_time(1)) sprintf('%2.2d',current_time(2)) ...
-                sprintf('%2.2d',current_time(3)) '_' sprintf('%2.2d',current_time(4)) ...
-                sprintf('%2.2d',current_time(5)) sprintf('%02.0f',current_time(5)) ];
-print('-djpeg','-r100',[data_path_prefix time_string '_' location '_map_' data_type])
+print('-djpeg','-r100',[data_path_prefix location '_' prefix '_map_' data_type])
+
 % save fig
-saveas(fig_h, [data_path_prefix time_string '_' location '_map_' data_type], 'fig');
+saveas(fig_h, [data_path_prefix location '_' prefix '_map_' data_type], 'fig');
 
 end
