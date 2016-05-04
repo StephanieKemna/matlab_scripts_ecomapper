@@ -73,6 +73,7 @@ load(filename);
 
 %% plot bathy colors
 disp(['Creating scatter plot for: ' data_type]);
+% data: lon, lat, data, time, depth
 scatter( data(:,1), data(:,2), 10, data(:,3), 'filled');
 
 %% finish figure
@@ -105,12 +106,11 @@ set(findall(gcf,'type','text'),'FontSize',16)
 %% save file
 disp(['Save figures for: ' data_type]);
 % prefix by date of trial
-first_date = time_datenum(1);
+first_date = data(1,4);
 fd_datestr = datestr(first_date);
 prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
 
 % save jpeg
-set(gcf,'PaperUnits','inches','PaperPosition',[0 0 20 12])
 print('-djpeg','-r100',[data_path_prefix location '_' prefix '_map_' data_type])
 
 % save fig
