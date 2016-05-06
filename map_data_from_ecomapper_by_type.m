@@ -111,6 +111,7 @@ fd_datestr = datestr(first_date);
 prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
 
 % save jpeg
+set(gcf,'PaperUnits','inches','PaperPosition',[0 0 20 12])
 print('-djpeg','-r100',[data_path_prefix location '_' prefix '_map_' data_type])
 
 % save fig
