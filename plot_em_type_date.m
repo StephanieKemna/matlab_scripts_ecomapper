@@ -11,7 +11,7 @@
 % Institution: University of Southern California
 % Date: Apr 22, 2015
 %
-function [] = plot_em_type_date(dd, mm, yyyy, data_type, data_path_prefix, location)
+function [] = plot_em_type_date(dd, mm, yyyy, data_type, data_path_prefix, location, b_localtime, b_dst)
 
 %% input/preparation
 if nargin < 3
@@ -30,13 +30,20 @@ end
 % prepare labels
 run em_prepare_labels
 
+% construct folder name given location and date
+data_path_prefix = [data_path_prefix location '_' num2str(yyyy) sprintf('%02d',mm) sprintf('%02d',dd) '/'];
+
 %% read data
 % load the data
-filename = [data_path_prefix data_type '_' location '.mat'];
+filename = [data_path_prefix data_type '_' location '.mat']
 % create data file if necessary
 if ~exist(filename,'file')
     disp('data file non-existent, calling compile_all_by_type');
-    compile_all_by_type(data_type, data_path_prefix, location)
+    compile_all_by_type(data_type, data_path_prefix, 0, location, b_localtime, b_dst)
+end
+if ~exist(filename,'file')
+    disp('data file still non-existent, returning');
+    return;
 end
 load(filename);
 
@@ -64,8 +71,8 @@ end
 
 %% plot
 if ( cnt > 0 )
-    min_value = min(nw_data)
-    max_value = max(nw_data)
+    min_value = min(nw_data);
+    max_value = max(nw_data);
     
     % prep figure
     figure('Position',[0 0 2000 1200])
@@ -78,7 +85,7 @@ if ( cnt > 0 )
     c = colorbar;
 
     set(get(c,'Title'),'String',type_string);
-    if ( data_type == 'odo')
+    if ( strcmp(data_type,'odo') == 1 )
         caxis([0 20]);
         load('odo-cm.mat');
         colormap(cm)

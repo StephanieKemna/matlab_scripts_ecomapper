@@ -48,6 +48,10 @@ disp(['location: ' location])
 disp(['local time (bool): ' num2str(b_localtime)])
 disp(['DST (bool): ' num2str(b_dst)])
 
+if ( strcmp(data_path_prefix(end),'/') == 0 )
+    data_path_prefix = [data_path_prefix '/']
+end
+
 % construct file location / name
 filename = [data_path_prefix data_type '_' location '.mat'];
 if exist(filename,'file')
