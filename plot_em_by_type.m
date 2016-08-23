@@ -1,5 +1,5 @@
 %
-% function [] = plot_em_by_type(data_type,data_path_prefix, b_localtime, b_dst, location)
+% function [] = plot_em_by_type(data_type, data_path_prefix, location, b_localtime, b_dst)
 %   function to plot data from mat file, 
 %     create mat file from EcoMapper log file using compile_all_ODO.m
 %  data_type, options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga

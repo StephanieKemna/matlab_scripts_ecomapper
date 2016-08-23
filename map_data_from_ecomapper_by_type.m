@@ -43,7 +43,11 @@ if nargin < 6
     b_dst = 0;
 end
 
-filename = [data_path_prefix data_type '_' location '.mat'];
+if ( strcmp(data_path_prefix(end),'/') == 0 )
+    data_path_prefix = [data_path_prefix '/']
+end
+
+filename = [data_path_prefix data_type '_' location '.mat']
 
 % create data file if necessary
 if ~exist(filename,'file')

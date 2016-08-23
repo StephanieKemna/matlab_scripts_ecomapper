@@ -56,7 +56,7 @@ depth = data(:,5);
 
 %% extract data by date
 % construct desired date
-date_desired = datestr([num2str(mm) '-' num2str(dd) '-' num2str(yyyy)])
+date_desired = datestr([num2str(mm) '-' num2str(dd) '-' num2str(yyyy)]);
 
 cnt = 0;
 for ( dep_idx = 1:length(depth) )
@@ -75,7 +75,7 @@ if ( cnt > 0 )
     max_value = max(nw_data);
     
     % prep figure
-    figure('Position',[0 0 2000 1200])
+    fig_h = figure('Position',[0 0 2000 1200])
     hold on
 
     % plot the data, colored by level of dissolved oxygen
@@ -100,6 +100,21 @@ if ( cnt > 0 )
 
     set(gca,'FontSize',16);
     set(findall(gcf,'type','text'),'FontSize',16);
+
+    %% save file
+    disp(['Save figures for: ' data_type]);
+    % prefix by date of trial
+    first_date = time_datenum(1);
+    fd_datestr = datestr(first_date);
+    prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
+
+    % save jpeg
+    set(gcf,'PaperUnits','inches','PaperPosition',[0 0 20 12])
+    print('-djpeg','-r100',[data_path_prefix location '_' prefix '_plot_' data_type])
+
+    % save fig
+    saveas(fig_h, [data_path_prefix location '_' prefix '_plot_' data_type], 'fig');
+
 end
 
 end
