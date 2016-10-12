@@ -107,18 +107,18 @@ set(get(cb,'Title'),'String',type_title_string);
 set(gca,'FontSize',16)
 set(findall(gcf,'type','text'),'FontSize',16)
 
-%% save file
-disp(['Save figures for: ' data_type]);
-% prefix by date of trial
-first_date = data(1,4);
-fd_datestr = datestr(first_date);
-prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
-
-% save jpeg
-set(gcf,'PaperUnits','inches','PaperPosition',[0 0 20 12])
-print('-djpeg','-r100',[data_path_prefix location '_' prefix '_map_' data_type])
-
-% save fig
-saveas(fig_h, [data_path_prefix location '_' prefix '_map_' data_type], 'fig');
+% %% save file
+% disp(['Save figures for: ' data_type]);
+% % prefix by date of trial
+% first_date = data(1,4);
+% fd_datestr = datestr(first_date);
+% prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
+% 
+% % save jpeg
+% set(gcf,'PaperUnits','inches','PaperPosition',[0 0 20 12])
+% print('-djpeg','-r100',[data_path_prefix location '_' prefix '_map_' data_type])
+% 
+% % save fig
+% saveas(fig_h, [data_path_prefix location '_' prefix '_map_' data_type], 'fig');
 
 end

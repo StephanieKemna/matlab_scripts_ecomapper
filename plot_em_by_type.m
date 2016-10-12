@@ -36,6 +36,10 @@ end
 % prepare labels
 run em_prepare_labels
 
+if ( strcmp(data_path_prefix(end),'/') == 0 )
+    data_path_prefix = [data_path_prefix '/']
+end
+
 %% read data
 % load the data
 filename = [data_path_prefix data_type '_' location '.mat']
@@ -96,18 +100,18 @@ set(h,'interpreter','none')
 set(gca,'FontSize',16);
 set(findall(gcf,'type','text'),'FontSize',16);
 
-%% save file
-disp(['Save figures for: ' data_type]);
-% prefix by date of trial
-first_date = time_datenum(1);
-fd_datestr = datestr(first_date);
-prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
-
-% save jpeg
-set(gcf,'PaperUnits','inches','PaperPosition',[0 0 20 12])
-print('-djpeg','-r100',[data_path_prefix location '_' prefix '_plot_' data_type])
-
-% save fig
-saveas(fig_h, [data_path_prefix location '_' prefix '_plot_' data_type], 'fig');
+% %% save file
+% disp(['Save figures for: ' data_type]);
+% % prefix by date of trial
+% first_date = time_datenum(1);
+% fd_datestr = datestr(first_date);
+% prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
+% 
+% % save jpeg
+% set(gcf,'PaperUnits','inches','PaperPosition',[0 0 20 12])
+% print('-djpeg','-r100',[data_path_prefix location '_' prefix '_plot_' data_type])
+% 
+% % save fig
+% saveas(fig_h, [data_path_prefix location '_' prefix '_plot_' data_type], 'fig');
 
 end
