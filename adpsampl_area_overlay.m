@@ -16,4 +16,4 @@ line([lo_w lo_e],[la_n la_n],'Color',[1 1 1],'LineWidth',3)
 line([lo_e lo_e],[la_n la_s],'Color',[1 1 1],'LineWidth',3)
 
 % focus on area
-axis([-117.813 -117.804 34.085 34.092])
+run focus_puddingstone
