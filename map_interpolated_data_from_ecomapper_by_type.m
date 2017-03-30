@@ -37,7 +37,13 @@ if nargin < 4
     location = 'puddingstone';
 end
 
+if ( strcmp(data_path_prefix(end),'/') == 0 )
+    data_path_prefix = [data_path_prefix '/']
+end
+
 filename = [data_path_prefix data_type '_' location '.mat'];
+% decide whether or not to save as csv
+save_csv = 0;
 
 % create data file if necessary
 if ~exist(filename,'file')
@@ -107,4 +113,10 @@ set(get(cb,'Title'),'String','Depth (m)');
 set(gca,'FontSize',16)
 set(findall(gcf,'type','text'),'FontSize',16)
 
+%% other save methods
+
+% store as csv
+if ( save_csv )
+  all_data = [X(:) Y(:) zi(:)];
+  dlmwrite([data_type '_' location '.csv'],all_data, 'delimiter', ',', 'precision', 20)
 end
