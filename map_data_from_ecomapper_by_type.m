@@ -1,7 +1,7 @@
 %
-% function [] = map_puddingstone_depth_interpolated (data_type, mapfile, data_path_prefix, location)
-% Plot an interpolated grid of the bathymetry data measured by the
-% EcoMapper
+% function [] = map_data_from_ecomapper_by_type (data_type, mapfile, data_path_prefix, location, b_localtime, b_dst, multiple_folders)
+%
+% Plot data measured by the EcoMapper onto map (tiff)
 %  data_type, options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga
 %  default mapfile: '~/Maps/puddingstone/puddingstone_dam_extended.tiff'
 %  default data_path_prefix: '~/data_em/logs/'
@@ -19,7 +19,7 @@
 %
 % tested with MatlabR2012a on Ubuntu 14.04
 %
-function [] = map_data_from_ecomapper_by_type (data_type, mapfile, data_path_prefix, location, b_localtime, b_dst)
+function [] = map_data_from_ecomapper_by_type (data_type, mapfile, data_path_prefix, location, b_localtime, b_dst, multiple_folders)
 
 %% check arguments, construct bathy file(name)
 if nargin < 1
@@ -42,6 +42,9 @@ end
 if nargin < 6
     b_dst = 0;
 end
+if nargin < 7
+  multiple_folders = 0;
+end
 
 if ( strcmp(data_path_prefix(end),'/') == 0 )
     data_path_prefix = [data_path_prefix '/']
@@ -52,7 +55,7 @@ filename = [data_path_prefix data_type '_' location '.mat']
 % create data file if necessary
 if ~exist(filename,'file')
     disp('data file non-existent, calling compile_all_by_type');
-    compile_all_by_type(data_type, data_path_prefix, 0, location, b_localtime, b_dst)
+    compile_all_by_type(data_type, data_path_prefix, multiple_folders, location, b_localtime, b_dst)
 end
 if ~exist(filename,'file')
     disp('data file still non-existent, not plotting');
