@@ -98,6 +98,8 @@ elseif ( strcmp(data_type,'water_depth') == 1 || strcmp(data_type,'water_depth_d
     if ( strcmp(location,'puddingstone')  == 1 && cx(2) > 25 )
         caxis([0 25]);
     end
+    load('cm_puddingstone_water_depth.mat')
+    colormap(flipud(cm));
 else
     if ( min(data(:,3)) ~= max(data(:,3)) )
         caxis([min(data(:,3)) max(data(:,3))])

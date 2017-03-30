@@ -83,7 +83,7 @@ minLon = min(data(:,1));
 maxLon = max(data(:,1));
 minLat = min(data(:,2));
 maxLat = max(data(:,2));
-[X, Y] = meshgrid(linspace(minLon,maxLon,200), linspace(minLat,maxLat,200));
+[X, Y] = meshgrid(linspace(minLon,maxLon,300), linspace(minLat,maxLat,300));
 
 %             longitude, latitude,  depth
 zi = griddata(data(:,1), data(:,2), data(:,3), X, Y);
@@ -103,7 +103,7 @@ maxDepth = max(data(:,3));
 if (location == 'puddingstone')
     caxis([0 20])
     load('cm_puddingstone_water_depth');
-    colormap(cm)
+    colormap(flipud(cm))
 else
     caxis([minDepth maxDepth]);
 end
