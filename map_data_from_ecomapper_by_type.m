@@ -85,8 +85,8 @@ scatter( data(:,1), data(:,2), 10, data(:,3), 'filled');
 
 %% finish figure
 title([location ' EM measured ' type_title_string])
-ylabel('latitude')
-xlabel('longitude')
+ylabel('Latitude')
+xlabel('Longitude')
 cb = colorbar;
 
 if ( strcmp(data_type,'odo') == 1 )
@@ -106,24 +106,27 @@ else
     end
 end
 
+% spring/summer 2017, adaptive missions
+run adpsampl_area_overlay
+
 set(get(cb,'Title'),'String',type_title_string);
 
 % make all text in the figure to size 16
 set(gca,'FontSize',16)
 set(findall(gcf,'type','text'),'FontSize',16)
 
-% %% save file
-% disp(['Save figures for: ' data_type]);
-% % prefix by date of trial
-% first_date = data(1,4);
-% fd_datestr = datestr(first_date);
-% prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
-% 
+%% save file
+disp(['Save figures for: ' data_type]);
+% prefix by date of trial
+first_date = data(1,4);
+fd_datestr = datestr(first_date);
+prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
+
 % % save jpeg
 % set(gcf,'PaperUnits','inches','PaperPosition',[0 0 20 12])
 % print('-djpeg','-r100',[data_path_prefix location '_' prefix '_map_' data_type])
-% 
-% % save fig
-% saveas(fig_h, [data_path_prefix location '_' prefix '_map_' data_type], 'fig');
+
+% save fig
+saveas(fig_h, [data_path_prefix location '_' prefix '_map_' data_type], 'fig');
 
 end

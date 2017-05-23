@@ -41,9 +41,11 @@ disp(['localtime (bool): ' num2str(b_localtime)]);
 disp(['DST (bool): ' num2str(b_dst)]);
 
 %% run for all possible data types
+% labels = {'odo','chl','water_depth','water_depth_dvl','sp_cond','sal',...
+%     'pH','turb','bga','temp','temp2'};
 labels = {'odo','chl','water_depth','water_depth_dvl','sp_cond','sal',...
-    'pH','turb','bga','temp','temp2'};
-
+    'pH','bga','temp','temp2'};
+  
 for l_idx = 1:length(labels),
     map_data_from_ecomapper_by_type(labels{l_idx}, mapfile, data_path_prefix, location, b_localtime, b_dst);
 end

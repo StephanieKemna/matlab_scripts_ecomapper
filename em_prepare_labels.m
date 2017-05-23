@@ -22,9 +22,9 @@ if ( post_2017 )
     elseif (strcmp(data_type,'pH') == 1)
         type_string = 'YSI-pH'; % note, this is not mV
         type_title_string = 'pH';
-    elseif (strcmp(data_type,'turb') == 1)
-        type_string = 'Turbid+ NTU';
-        type_title_string = 'Turbidity (NTU)';
+%     elseif (strcmp(data_type,'turb') == 1)
+%         type_string = 'Turbid+ NTU';
+%         type_title_string = 'Turbidity (NTU)';
     elseif (strcmp(data_type,'bga') == 1)
         type_string = 'YSI-BGA-PC cells/mL';
         type_title_string = 'Blue-Green Algae (cells/mL)';

@@ -15,33 +15,42 @@
 %
 % tested with MatlabR2012a on Ubuntu 14.04
 %
-function [] = plot_all(data_path_prefix, b_localtime, b_dst, location)
+function [] = plot_all(data_path_prefix, b_localtime, b_dst, location, pre_2017)
 
 %% input / preparation
 if nargin < 1
-    data_path_prefix = '~/data_em/logs/';
+  data_path_prefix = '~/data_em/logs/';
 end
 if nargin < 2
-    b_localtime = 0;
+  b_localtime = 0;
 end
 if nargin < 3
-    b_dst = 0;
+  b_dst = 0;
 end
 if nargin < 4
-    location = 'puddingstone';
+  location = 'puddingstone';
+end
+if nargin < 5
+  pre_2017 = 0;
 end
 disp('Using:')
 disp(['data_path_prefix: ' data_path_prefix])
 disp(['location: ' location])
 disp(['localtime (bool): ' num2str(b_localtime)])
 disp(['DST (bool): ' num2str(b_dst)])
+disp(['pre_2017 (bool): ' num2str(pre_2017)])
 
 %% run for all possible data types
-labels = {'odo','chl','water_depth','water_depth_dvl','sp_cond','sal',...
+if ( pre_2017 ) 
+  labels = {'odo','chl','water_depth','water_depth_dvl','sp_cond','sal',...
     'pH','turb','bga','temp','temp2'};
+else
+  labels = {'odo','chl','water_depth','water_depth_dvl','sp_cond','sal',...
+    'pH','bga','temp','temp2'};  
+end
 
 for l_idx = 1:length(labels),
-    disp(labels{l_idx})
-    plot_em_by_type(labels{l_idx}, data_path_prefix, location, b_localtime, b_dst);
+  disp(labels{l_idx})
+  plot_em_by_type(labels{l_idx}, data_path_prefix, location, b_localtime, b_dst);
 end
 

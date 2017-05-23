@@ -88,10 +88,15 @@ elseif ( strcmp(data_type,'water_depth') == 1 || strcmp(data_type,'water_depth_d
     end
 end
 
-
 xlabel('time (yyyy-mm-dd hh:mm:ss)')
 ylabel('depth (m)')
 datetick('x','yyyy-mm-dd HH:MM:SS')
+
+% one tick per meter
+ax = gca;
+yt = get(ax,'YTick');
+set(ax,'YTick',min(yt):1:max(yt));
+grid on;
 
 h = title(filename(1:end-4));
 set(h,'interpreter','none')

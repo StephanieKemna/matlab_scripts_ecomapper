@@ -94,8 +94,8 @@ scatter( X(:), Y(:), 10, zi(:), 'filled')
 
 %% finish figure
 title([location ' EM measured ' type_title_string])
-ylabel('latitude')
-xlabel('longitude')
+ylabel('Latitude')
+xlabel('Longitude')
 
 cb = colorbar;
 minDepth = min(data(:,3));
