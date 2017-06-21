@@ -12,24 +12,22 @@
 % Institution: University of Southern California
 % Date: Apr 22, 2015 - May 2016
 %
-function [] = plot_em_by_type_3d(data_type, data_path_prefix, location, b_localtime, b_dst)
+function [] = plot_em_by_type_3d(data_type, location, b_localtime, b_dst)
 
 %% input/preparation
+data_path_prefix=uigetdir
 if nargin < 1
     disp('Error! No data_type defined')
     disp('Options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga')
     return
 end
 if nargin < 2
-    data_path_prefix = '~/data_em/logs/';
-end
-if nargin < 3
     location = 'puddingstone';
 end
-if nargin < 4
+if nargin < 3
     b_localtime = 0;
 end
-if nargin < 5
+if nargin < 4
     b_dst = 0;
 end
 
