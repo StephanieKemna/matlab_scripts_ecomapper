@@ -101,6 +101,8 @@ grid on;
 h = title(filename(1:end-4));
 set(h,'interpreter','none')
 
+grid on
+
 % make all text in the figure to size 16
 set(gca,'FontSize',16);
 set(findall(gcf,'type','text'),'FontSize',16);

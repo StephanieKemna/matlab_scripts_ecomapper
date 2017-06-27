@@ -33,6 +33,9 @@ end
 if nargin < 5
   pre_2017 = 0;
 end
+if nargin < 5
+    pre_2017 = 0;
+end
 disp('Using:')
 disp(['data_path_prefix: ' data_path_prefix])
 disp(['location: ' location])
@@ -47,7 +50,6 @@ if ( pre_2017 )
 else
   labels = {'odo','chl','water_depth','water_depth_dvl','sp_cond','sal',...
     'pH','bga','temp','temp2'};  
-end
 
 for l_idx = 1:length(labels),
   disp(labels{l_idx})
