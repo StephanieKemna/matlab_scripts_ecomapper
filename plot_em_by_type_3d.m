@@ -1,35 +1,35 @@
 %
-% function [] = plot_em_by_type(data_type, data_path_prefix, location, b_localtime, b_dst)
+% function [] = plot_em_by_type_3e(location, b_localtime, b_dst)
 %   function to plot data from mat file, 
-%     create mat file from EcoMapper log file using compile_all_ODO.m
-%  data_type, options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga
-%  default data_path_prefix: '~/data_em/logs/'
+%     create mat file from EcoMapper log file using compile_all.m
 %  default location: 'puddingstone
 %  b_localtime: convert UTC to local time? (0 or 1, default: 0)
 %  b_dst: use Daylight Savings Time (if b_localtime)? (0 or 1, default: 0)
 %
-% Author: Stephanie Kemna
+% Author: Stephanie Kemna, Jessica Gonzalez
 % Institution: University of Southern California
-% Date: Apr 22, 2015 - May 2016
+% Date: Apr 22, 2015 - May 2016 - June 2017
 %
-function [] = plot_em_by_type_3d(data_type, location, b_localtime, b_dst)
+function [] = plot_em_by_type_3d( location, b_localtime, b_dst)
 
 %% input/preparation
-data_path_prefix=uigetdir
 if nargin < 1
-    disp('Error! No data_type defined')
-    disp('Options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga')
-    return
-end
-if nargin < 2
     location = 'puddingstone';
 end
-if nargin < 3
+if nargin < 2
     b_localtime = 0;
 end
-if nargin < 4
+if nargin < 3
     b_dst = 0;
 end
+
+% interactive choice of data dir
+data_path_prefix = uigetdir 
+
+% interactive choice of data type
+data_types = {'odo', 'chl', 'water_depth', 'water_depth_dvl', 'sp_cond', 'sal', 'ph', 'bga', 'temp', 'temp2'};
+[choice,ok]= listdlg('PromptString', 'Select a file:','SelectionMode', 'single','ListString', data_types)
+data_type = data_types{choice}
 
 % prepare labels
 run em_prepare_labels
