@@ -113,10 +113,9 @@ fd_datestr = datestr(first_date);
 prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
 
 % save jpeg
-set(gcf,'PaperUnits','inches','PaperPosition',[0 0 20 12])
-print('-djpeg','-r100',[data_path_prefix location '_' prefix '_plot_' data_type])
+save_as_jpeg(data_path_prefix, location, prefix, 'plot', data_type, 100);
 
 % save fig
-saveas(fig_h, [data_path_prefix location '_' prefix '_plot_' data_type], 'fig');
+save_as_fig(fig_h, data_path_prefix, location, prefix, 'plot', data_type);
 
 end

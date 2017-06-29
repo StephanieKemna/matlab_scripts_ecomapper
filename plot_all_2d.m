@@ -1,5 +1,5 @@
 %
-% function [] = plot_all(data_path_prefix, b_localtime, b_dst, location)
+% function [] = plot_all_3d(data_path_prefix, b_localtime, b_dst, location, pre_2017)
 %
 %  data_path_prefix: no default; define where to search for log files
 %                   (day/mission folder)
@@ -16,20 +16,23 @@
 %
 % tested with MatlabR2012a on Ubuntu 16.04
 %
-function [] = plot_all(b_localtime, b_dst, location, pre_2017)
+function [] = plot_all_2d(data_path_prefix, b_localtime, b_dst, location, pre_2017)
 
 %% input / preparation
-data_path_prefix= uigetdir
 if nargin < 1
-  b_localtime = 1;
+  % interactive choice of data dir, if none given
+  data_path_prefix = uigetdir;
 end
 if nargin < 2
-  b_dst = 1;
+  b_localtime = 1;
 end
 if nargin < 3
-  location = 'puddingstone';
+  b_dst = 1;
 end
 if nargin < 4
+  location = 'puddingstone';
+end
+if nargin < 5
   pre_2017 = 0;
 end
 disp('Using:')
@@ -51,6 +54,5 @@ end
 for l_idx = 1:length(labels),
   disp(labels{l_idx})
   plot_em_by_type(labels{l_idx}, data_path_prefix, location, b_localtime, b_dst);
-  plot_em_by_type_3d(labels{l_idx}, data_path_prefix, location, b_localtime, b_dst);
 end
 

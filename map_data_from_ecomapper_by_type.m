@@ -17,7 +17,7 @@
 % Institution: University of Southern California
 % Date: Apr 22, 2015, adapted from map_bathynetry_from_ecomapper
 %
-% tested with MatlabR2012a on Ubuntu 14.04
+% tested with MatlabR2012a on Ubuntu 16.04
 %
 function [] = map_data_from_ecomapper_by_type (data_type, mapfile, data_path_prefix, location, b_localtime, b_dst, multiple_folders)
 
@@ -115,6 +115,8 @@ set(get(cb,'Title'),'String',type_title_string);
 set(gca,'FontSize',16)
 set(findall(gcf,'type','text'),'FontSize',16)
 
+focus_map
+
 %% save file
 disp(['Save figures for: ' data_type]);
 % prefix by date of trial
@@ -123,10 +125,9 @@ fd_datestr = datestr(first_date);
 prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
 
 % % save jpeg
-% set(gcf,'PaperUnits','inches','PaperPosition',[0 0 20 12])
-% print('-djpeg','-r100',[data_path_prefix location '_' prefix '_map_' data_type])
+% save_as_jpeg(data_path_prefix, location, prefix, 'map', data_type, 100);
 
 % save fig
-saveas(fig_h, [data_path_prefix location '_' prefix '_map_' data_type], 'fig');
+save_as_fig(fig_h, data_path_prefix, location, prefix, 'map', data_type);
 
 end
