@@ -1,6 +1,17 @@
+
+% Pop up box with all sensor options
+sensors_cell = {'odo', 'chl', 'water_depth', 'water_depth_dvl', 'sp_cond',...
+    'sal', 'pH', 'bga', 'temp', 'temp2'};
+[dialogue_box] = listdlg('PromptString', 'Select a file:', 'SelectionMode',...
+    'single', 'ListString', sensors_cell);
+data_type = sensors_cell{dialogue_box};
+
+run em_prepare_labels
+
 % Importing file into matlab cell
-filename = '20170627_193227_UTC_0_jessica_mission1_IVER2-135.log';
-all_data = csvimport(filename, 'delimiter',';'); % Places all data set into large cell
+[filename, Pathname] = uigetfile('*.log', 'Select the data file');
+file_path = strcat(Pathname, filename);
+all_data = csvimport(file_path, 'delimiter',';'); % Places all data set into large cell
 
 % Extract the first row from the file
 first_row = (all_data(1,:));
@@ -11,8 +22,8 @@ latitude_index = find_index(first_row, 'Latitude');
 % Create string for Longitude
 longitude_index = find_index(first_row, 'Longitude');
 
-% Create string for CHL
-chl_index = find_index(first_row,'YSI-Chl ug/L'); 
+% Create string for generic data (sensors_cell options)
+generic_index = find_index(first_row,type_string); 
 
 % Create string for Depth
 depth_index = find_index(first_row, 'DFS Depth (m)'); 
@@ -26,7 +37,7 @@ longitude_column = [all_data{2:size(all_data,1),longitude_index}];
 
 depth_column = [all_data{2:size(all_data,1),depth_index}];
 
-chl_column = [all_data{2:size(all_data,1),chl_index}];
+generic_column = [all_data{2:size(all_data,1),generic_index}];
 
 % Longitude min and max
 min_lon = min(longitude_column);
@@ -59,21 +70,16 @@ dep_step_size = dep_range/num_steps;
 % Extracting unique values from the data
 matrix_data=[longitude_column', latitude_column', depth_column'];
 [unique_values,IA] = unique(matrix_data, 'rows', 'stable');
-chl_unique= chl_column(IA);
+generic_unique= generic_column(IA);
 lon_unique= longitude_column(IA);
 lat_unique= latitude_column(IA);
 dep_unique= depth_column(IA);
 
 % Interpolation command to generate plots inbetween sampled data
-chl_interp = griddata(lon_unique, lat_unique, dep_unique, chl_unique,...
+generic_interp = griddata(lon_unique, lat_unique, dep_unique, generic_unique,...
     lon_interp, lat_interp, dep_interp);
 
-slice(lon_interp, lat_interp, dep_interp, chl_interp, -117.808, 34.0885, 0)
+slice(lon_interp, lat_interp, dep_interp, generic_interp, -117.808, 34.0885, 0)
 
-% Pop up box with all sensor options
-sensors_cell = {'lat', 'lon', 'depth', 'chl','odo', 'ph','tempt'};
-[dialogue_box] = listdlg('PromptString', 'Select a file:', 'SelectionMode',...
-    'single', 'ListString', sensors_cell);
-sensors_cell{dialogue_box};
 
 
