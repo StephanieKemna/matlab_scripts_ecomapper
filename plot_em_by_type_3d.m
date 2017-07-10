@@ -1,41 +1,51 @@
 %
-% function [] = plot_em_by_type(data_type, data_path_prefix, location, b_localtime, b_dst)
+% function [] = plot_em_by_type_3d(data_type, data_path_prefix, location, b_localtime, b_dst, save_figs)
 %   function to plot data from mat file, 
-%     create mat file from EcoMapper log file using compile_all_ODO.m
-%  data_type, options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga
-%  default data_path_prefix: '~/data_em/logs/'
-%  default location: 'puddingstone
-%  b_localtime: convert UTC to local time? (0 or 1, default: 0)
-%  b_dst: use Daylight Savings Time (if b_localtime)? (0 or 1, default: 0)
+%     create mat file from EcoMapper log file using compile_all.m
+%  dialog windows will show for data_type and data_path_prefix if not
+%  specified
+%  default location: 'puddingstone'
+%  b_localtime: convert UTC to local time? (0 or 1, default: 1)
+%  b_dst: use Daylight Savings Time (if b_localtime)? (0 or 1, default: 1)
+%  save_file: store as fig and jpg (0 or 1, default: 1)
 %
-% Author: Stephanie Kemna
+% Author: Stephanie Kemna, Jessica Gonzalez
 % Institution: University of Southern California
-% Date: Apr 22, 2015 - May 2016
+% Date: Apr 22, 2015 - May 2016 - June 2017
 %
-function [] = plot_em_by_type_3d(data_type, location, b_localtime, b_dst)
+% tested with MatlabR2012a on Ubuntu 16.04
+%
+function [] = plot_em_by_type_3d(data_type, data_path_prefix, location, b_localtime, b_dst, save_figs)
 
 %% input/preparation
-data_path_prefix=uigetdir
 if nargin < 1
-    disp('Error! No data_type defined')
-    disp('Options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga')
-    return
+  % interactive choice of data type, if none given
+  data_types = {'odo', 'chl', 'water_depth', 'water_depth_dvl', 'sp_cond', 'sal', 'ph', 'bga', 'temp', 'temp2'};
+  [choice,ok] = listdlg('PromptString', 'Select a file:','SelectionMode', 'single','ListString', data_types);
+  data_type = data_types{choice};
 end
 if nargin < 2
-    location = 'puddingstone';
+  % interactive choice of data dir, if none given
+  data_path_prefix = uigetdir;
 end
 if nargin < 3
-    b_localtime = 0;
+  location = 'puddingstone';
 end
 if nargin < 4
-    b_dst = 0;
+  b_localtime = 1;
+end
+if nargin < 5
+  b_dst = 1;
+end
+if nargin < 6
+  save_figs = 1;
 end
 
 % prepare labels
 run em_prepare_labels
 
 if ( strcmp(data_path_prefix(end),'/') == 0 )
-    data_path_prefix = [data_path_prefix '/']
+  data_path_prefix = [data_path_prefix '/']
 end
 
 %% read data
@@ -43,12 +53,12 @@ end
 filename = [data_path_prefix data_type '_' location '.mat']
 % create data file if necessary
 if ~exist(filename,'file')
-    disp('data file non-existent, calling compile_all_by_type');
-    compile_all_by_type(data_type, data_path_prefix, 0, location, b_localtime, b_dst)
+  disp('data file non-existent, calling compile_all_by_type');
+  compile_all_by_type(data_type, data_path_prefix, 0, location, b_localtime, b_dst)
 end
 if ~exist(filename,'file')
-    disp('data file still non-existent, not plotting');
-    return;
+  disp('data file still non-existent, not plotting');
+  return;
 end
 
 load(filename);
@@ -64,7 +74,7 @@ depth = data(:,5);
 
 %% plot
 % prep figure
-fig_h = figure('Position',[0 0 2000 1200]);
+fig_h = figure('Position',[0 0 1600 1200]);
 hold on
     
 % plot the data, colored by level of dissolved oxygen
@@ -75,16 +85,16 @@ view(3)
 c = colorbar;
 set(get(c,'Title'),'String',type_title_string);
 if ( strcmp(data_type,'odo') == 1)
-    caxis([0 20])
-    load('odo-cm.mat')
-    colormap(cm)
+  caxis([0 20])
+  load('odo-cm.mat')
+  colormap(cm)
 elseif ( strcmp(data_type,'water_depth') == 1 || strcmp(data_type,'water_depth_dvl') == 1 )
-    if ( strcmp(location,'puddingstone') == 1 )
-        cx = caxis;
-        if ( cx(2) > 25 )
-            caxis([0 25])
-        end
+  if ( strcmp(location,'puddingstone') == 1 )
+    cx = caxis;
+    if ( cx(2) > 25 )
+        caxis([0 25])
     end
+  end
 end
 
 zlabel('Depth')
@@ -100,18 +110,21 @@ set(h,'interpreter','none')
 set(gca,'FontSize',16);
 set(findall(gcf,'type','text'),'FontSize',16);
 
-% %% save file
-% disp(['Save figures for: ' data_type]);
-% % prefix by date of trial
-% first_date = time_datenum(1);
-% fd_datestr = datestr(first_date);
-% prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
-% 
-% % save jpeg
-% set(gcf,'PaperUnits','inches','PaperPosition',[0 0 20 12])
-% print('-djpeg','-r100',[data_path_prefix location '_' prefix '_plot_' data_type])
-% 
-% % save fig
-% saveas(fig_h, [data_path_prefix location '_' prefix '_plot_' data_type], 'fig');
+% change viewing angle slightly to be a bit more based on Lon axis
+view([-30.0 25])
+
+%% save file
+if ( save_figs )
+  disp(['Save figures for: ' data_type]);
+  % prefix by date of trial
+  first_date = time_datenum(1);
+  fd_datestr = datestr(first_date);
+  prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
+
+  % save jpeg
+  save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, [0 0 16 12])
+
+  save_as_fig(fig_h, data_path_prefix, location, prefix, '3dplot', data_type);
+end
 
 end
