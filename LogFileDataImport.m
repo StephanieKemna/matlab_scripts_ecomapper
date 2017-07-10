@@ -14,9 +14,9 @@ longitude_index = find_index(first_row, 'Longitude');
 % Create string for CHL
 chl_index = find_index(first_row,'YSI-Chl ug/L'); 
 
-
 % Create string for Depth
 depth_index = find_index(first_row, 'DFS Depth (m)'); 
+
 
 
 % Extracts data from specific column from file/cell
@@ -70,7 +70,10 @@ chl_interp = griddata(lon_unique, lat_unique, dep_unique, chl_unique,...
 
 slice(lon_interp, lat_interp, dep_interp, chl_interp, -117.808, 34.0885, 0)
 
-
-
+% Pop up box with all sensor options
+sensors_cell = {'lat', 'lon', 'depth', 'chl','odo', 'ph','tempt'};
+[dialogue_box] = listdlg('PromptString', 'Select a file:', 'SelectionMode',...
+    'single', 'ListString', sensors_cell);
+sensors_cell{dialogue_box};
 
 

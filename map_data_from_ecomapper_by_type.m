@@ -70,9 +70,9 @@ fig_h = figure('Position',[0 0 1400 1200]);
 hold on
 
 % add geo-referenced map as background
-[A, R] = geotiffread(mapfile);
-mapshow(A,R);
-axis([R.Lonlim(1) R.Lonlim(2) R.Latlim(1) R.Latlim(2)])
+% [A, R] = geotiffread(mapfile);
+% mapshow(A,R);
+% axis([R.Lonlim(1) R.Lonlim(2) R.Latlim(1) R.Latlim(2)])
 
 %% load data
 disp(['Loading data for: ' data_type]);

@@ -1,3 +1,5 @@
+% defining the data_type variable
+data_type = 'odo';
 post_2017 = 1;
 if ( post_2017 )
     % prepare em data type labels
