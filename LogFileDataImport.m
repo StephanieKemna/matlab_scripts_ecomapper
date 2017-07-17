@@ -9,7 +9,8 @@ data_type = sensors_cell{dialogue_box};
 run em_prepare_labels
 
 % Importing file into matlab cell
-[filename, Pathname] = uigetfile('*.log', 'Select the data file');
+[filename, Pathname] = uigetfile('*.log', 'Select the data file', ... 
+   '/home/jessica/data_em/Logs/puddingstone_20170627/20170627_193227_UTC_0_jessica_mission1_IVER2-135.log');
 file_path = strcat(Pathname, filename);
 all_data = csvimport(file_path, 'delimiter',';'); % Places all data set into large cell
 
@@ -39,47 +40,40 @@ depth_column = [all_data{2:size(all_data,1),depth_index}];
 
 generic_column = [all_data{2:size(all_data,1),generic_index}];
 
-% Longitude min and max
-min_lon = min(longitude_column);
-max_lon = max(longitude_column);
-
-% Latitude min and max
-min_lat = min(latitude_column);
-max_lat = max(latitude_column);
-
 % Depth min and max
 min_dep = min(depth_column);
 max_dep = max(depth_column);
 
-% Range of latitude, longitude, and depth
-lat_range = max_lat - min_lat;
-lon_range = max_lon - min_lon;
+% Range depth
 dep_range = max_dep - min_dep;
-
 num_steps = 100;
 
-% Step size of latitude, longitude, and depth
-lat_step_size = lat_range/num_steps;
-lon_step_size = lon_range/num_steps;
+% Step size of depth
 dep_step_size = dep_range/num_steps;
 
-% Creating the meshgrid necessary for interpolation
-[lon_interp,lat_interp,dep_interp] = meshgrid(min_lon:lon_step_size:max_lon,...
-    min_lat:lat_step_size:max_lat,min_dep:dep_step_size:max_dep);
+% ProducesnNumber of copies for Lat & Long (so hardcoding isn't necessary)
+depth_range = min_dep : dep_step_size : max_dep;
+depth_length = length(depth_range);
 
-% Extracting unique values from the data
-matrix_data=[longitude_column', latitude_column', depth_column'];
-[unique_values,IA] = unique(matrix_data, 'rows', 'stable');
-generic_unique= generic_column(IA);
-lon_unique= longitude_column(IA);
-lat_unique= latitude_column(IA);
-dep_unique= depth_column(IA);
+% Produces the number of copies for Depth
+longitude_length = length(longitude_column);
+ 
+% Variables necessary for griddata so a cube of informaton isn't produced
+lon_copies = repmat(longitude_column, depth_length, 1);
+lat_copies = repmat(latitude_column, depth_length, 1);
+depth_copies= repmat(depth_range', 1, longitude_length);
 
-% Interpolation command to generate plots inbetween sampled data
-generic_interp = griddata(lon_unique, lat_unique, dep_unique, generic_unique,...
-    lon_interp, lat_interp, dep_interp);
+% Creating the grid and the values for each axis
+grid_data_values= griddata(longitude_column, latitude_column, depth_column,...
+    generic_column, lon_copies, lat_copies, depth_copies);
 
-slice(lon_interp, lat_interp, dep_interp, generic_interp, -117.808, 34.0885, 0)
-
+% Plot the completed 3D slice/graph
+three_dimensional_slice = surf(lon_copies, lat_copies, -depth_copies, grid_data_values);
+shading interp
+colorbar
+title(type_string)
+xlabel('Longitude')
+ylabel('Latitude')
+zlabel('Depth')
 
 
