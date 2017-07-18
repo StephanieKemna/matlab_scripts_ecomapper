@@ -1,20 +1,24 @@
-
+function[] = LogFileDataImport( data_type, file_path)
 % Pop up box with all sensor options
 sensors_cell = {'odo', 'chl', 'water_depth', 'water_depth_dvl', 'sp_cond',...
     'sal', 'pH', 'bga', 'temp', 'temp2'};
-[dialogue_box] = listdlg('PromptString', 'Select a file:', 'SelectionMode',...
-    'single', 'ListString', sensors_cell);
-data_type = sensors_cell{dialogue_box};
+if nargin == 0
+    [dialogue_box] = listdlg('PromptString', 'Select a file:', 'SelectionMode',...
+        'single', 'ListString', sensors_cell);
+    data_type = sensors_cell{dialogue_box}; 
+end
 
 run em_prepare_labels
 
 % Importing file into matlab cell
-[filename, Pathname] = uigetfile('*.log', 'Select the data file', ... 
-   '/home/jessica/data_em/Logs/puddingstone_20170627/20170627_193227_UTC_0_jessica_mission1_IVER2-135.log');
-file_path = strcat(Pathname, filename);
+if nargin < 2
+    [filename, Pathname] = uigetfile('*.log', 'Select the data file', ... 
+       '/home/jessica/data_em/Logs/puddingstone_20170627/20170627_193227_UTC_0_jessica_mission1_IVER2-135.log');
+    file_path = strcat(Pathname, filename);
+end
 
 % Changing the .log file into .mat, while specifying data_type 
-filename_mat = strcat(Pathname, filename(1:length(filename)-4), '_', data_type, '.mat');
+filename_mat = strcat(file_path(1:length(file_path)-4), '_', data_type, '.mat');
 
 if exist(filename_mat, 'file') == 0
     %Extracting data from each column
@@ -58,6 +62,8 @@ else
 end
 
 % Plot the completed 3D slice/graph
+hFig= figure;
+set(hFig, 'Position', [0 0 1000 1000])
 three_dimensional_slice = surf(lon_copies, lat_copies, -depth_copies, grid_data_values);
 shading interp
 colorbar
@@ -65,5 +71,12 @@ title(type_string)
 xlabel('Longitude')
 ylabel('Latitude')
 zlabel('Depth')
+if  strcmp('chl', data_type) == 1
+    caxis([0 100])
+end
 
+filename_jpg = strcat(file_path(1:length(file_path)-4), '_curtain_', data_type, '.jpg');
+saveas(gcf, filename_jpg)
+
+end
 
