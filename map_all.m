@@ -24,10 +24,10 @@ if nargin < 1
     data_path_prefix = '~/data_em/logs/';
 end
 if nargin < 2
-    b_localtime = 0;
+    b_localtime = 1;
 end
 if nargin < 3
-    b_dst = 0;
+    b_dst = 1;
 end
 if nargin < 4
     mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
