@@ -16,20 +16,22 @@
 %
 % tested with MatlabR2012a on Ubuntu 16.04
 %
-function [] = plot_all(b_localtime, b_dst, location, pre_2017)
+function [] = plot_all(data_path_prefix, b_localtime, b_dst, location, pre_2017)
 
 %% input / preparation
-data_path_prefix= uigetdir
 if nargin < 1
-  b_localtime = 1;
+  data_path_prefix= uigetdir
 end
 if nargin < 2
-  b_dst = 1;
+  b_localtime = 1;
 end
 if nargin < 3
-  location = 'puddingstone';
+  b_dst = 1;
 end
 if nargin < 4
+  location = 'puddingstone';
+end
+if nargin < 5
   pre_2017 = 0;
 end
 disp('Using:')
