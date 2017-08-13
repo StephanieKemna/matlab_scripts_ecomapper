@@ -52,7 +52,7 @@ end
 
 for l_idx = 1:length(labels),
   disp(labels{l_idx})
-  plot_em_by_type(labels{l_idx}, data_path_prefix, location, b_localtime, b_dst);
-  plot_em_by_type_3d(labels{l_idx}, data_path_prefix, location, b_localtime, b_dst);
+  plot_em_by_type(labels{l_idx}, data_path_prefix, location, b_localtime, b_dst, 1);
+  plot_em_by_type_3d(labels{l_idx}, data_path_prefix, location, b_localtime, b_dst, 1);
 end
 

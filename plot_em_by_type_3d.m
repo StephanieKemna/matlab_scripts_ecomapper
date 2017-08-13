@@ -1,13 +1,13 @@
 %
 % function [] = plot_em_by_type_3d(data_type, data_path_prefix, location, b_localtime, b_dst, save_figs)
-%   function to plot data from mat file, 
+%   function to plot data from mat file,
 %     create mat file from EcoMapper log file using compile_all.m
 %  dialog windows will show for data_type and data_path_prefix if not
 %  specified
 %  default location: 'puddingstone'
 %  b_localtime: convert UTC to local time? (0 or 1, default: 1)
 %  b_dst: use Daylight Savings Time (if b_localtime)? (0 or 1, default: 1)
-%  save_file: store as fig and jpg (0 or 1, default: 1)
+%  save_figs: store as fig and jpg (0 or 1, default: 1)
 %
 % Author: Stephanie Kemna, Jessica Gonzalez
 % Institution: University of Southern California
@@ -76,7 +76,7 @@ depth = data(:,5);
 % prep figure
 fig_h = figure('Position',[0 0 1600 1200]);
 hold on
-    
+
 % plot the data, colored by level of dissolved oxygen
 scatter3(longitude,latitude,-depth,20,em_data,'filled')
 view(3)
@@ -92,7 +92,7 @@ elseif ( strcmp(data_type,'water_depth') == 1 || strcmp(data_type,'water_depth_d
   if ( strcmp(location,'puddingstone') == 1 )
     cx = caxis;
     if ( cx(2) > 25 )
-        caxis([0 25])
+      caxis([0 25])
     end
   end
 end
@@ -120,32 +120,32 @@ if ( save_figs )
   first_date = time_datenum(1);
   fd_datestr = datestr(first_date);
   prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
-
+  
   % save jpeg
   save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, [0 0 16 12])
   
   % save fig
   save_as_fig(fig_h, data_path_prefix, location, prefix, '3dplot', data_type);
-
+  
   % extra plots caxis chl/bga
   if ( strcmp(data_type,'chl') == 1 )
     caxis([0 100])
     % save jpeg
     save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, 'caxis100', [0 0 16 12])
-
+    
     caxis([0 50])
     % save jpeg
-    save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, 'caxis50', [0 0 16 12]) 
+    save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, 'caxis50', [0 0 16 12])
   elseif ( strcmp(data_type,'bga') == 1 )
     caxis([0 30000])
     % save jpeg
     save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, 'caxis30k', [0 0 16 12])
-
+    
     caxis([0 80000])
     % save jpeg
     save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, 'caxis80k', [0 0 16 12])
   end
-
+  
 end
 
 end
