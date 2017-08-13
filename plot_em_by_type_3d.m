@@ -123,8 +123,29 @@ if ( save_figs )
 
   % save jpeg
   save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, [0 0 16 12])
-
+  
+  % save fig
   save_as_fig(fig_h, data_path_prefix, location, prefix, '3dplot', data_type);
+
+  % extra plots caxis chl/bga
+  if ( strcmp(data_type,'chl') == 1 )
+    caxis([0 100])
+    % save jpeg
+    save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, 'caxis100', [0 0 16 12])
+
+    caxis([0 50])
+    % save jpeg
+    save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, 'caxis50', [0 0 16 12]) 
+  elseif ( strcmp(data_type,'bga') == 1 )
+    caxis([0 30000])
+    % save jpeg
+    save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, 'caxis30k', [0 0 16 12])
+
+    caxis([0 80000])
+    % save jpeg
+    save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, 'caxis80k', [0 0 16 12])
+  end
+
 end
 
 end

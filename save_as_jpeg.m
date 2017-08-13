@@ -1,4 +1,4 @@
-% function [] = save_as_jpeg(data_path_prefix, location, prefix, identifier, data_type, resolution, paper_position)
+% function [] = save_as_jpeg(data_path_prefix, location, prefix, identifier, data_type, resolution, postfix, paper_position)
 %
 % Author: Stephanie Kemna
 % Institution: University of Southern California
@@ -6,7 +6,7 @@
 %
 % tested with MatlabR2012a on Ubuntu 16.04
 %
-function [] = save_as_jpeg(data_path_prefix, location, prefix, identifier, data_type, resolution, paper_position)
+function [] = save_as_jpeg(data_path_prefix, location, prefix, identifier, data_type, resolution, postfix, paper_position)
 
 % process parameters
 res_str = ['-r' num2str(resolution)];
@@ -18,11 +18,19 @@ disp('Printing jpeg...')
 
 % save jpeg
 set(gcf,'PaperUnits','inches','PaperPosition',paper_position)
+
+% construct filename
+if ( exist('postfix','var') == 1 )
+  filenm = [data_path_prefix location '_' prefix '_' identifier '_' data_type '_' postfix];
+else
+  filenm = [data_path_prefix location '_' prefix '_' identifier '_' data_type];
+end
+
 % choose renderer depending on whether or not it is a 3d plot
 if ( strfind(identifier,'3d') > 0 )
-  print('-djpeg',res_str,[data_path_prefix location '_' prefix '_' identifier '_' data_type],'-zbuffer')
+  print('-djpeg',res_str,filenm,'-zbuffer')
 else
-  print('-djpeg',res_str,[data_path_prefix location '_' prefix '_' identifier '_' data_type],'-painters')
+  print('-djpeg',res_str,filenm,'-painters')
 end
   
 end

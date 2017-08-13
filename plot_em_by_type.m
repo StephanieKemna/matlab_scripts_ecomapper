@@ -118,4 +118,23 @@ save_as_jpeg(data_path_prefix, location, prefix, 'plot', data_type, 100);
 % save fig
 save_as_fig(fig_h, data_path_prefix, location, prefix, 'plot', data_type);
 
+% extra plots caxis chl/bga
+if ( strcmp(data_type,'chl') == 1 )
+  caxis([0 100])
+  % save jpeg
+  save_as_jpeg(data_path_prefix, location, prefix, 'plot', data_type, 100, 'caxis100');
+  
+  caxis([0 50])
+  % save jpeg
+  save_as_jpeg(data_path_prefix, location, prefix, 'plot', data_type, 100, 'caxis50');  
+elseif ( strcmp(data_type,'bga') == 1 )
+  caxis([0 30000])
+  % save jpeg
+  save_as_jpeg(data_path_prefix, location, prefix, 'plot', data_type, 100, 'caxis30k');
+  
+  caxis([0 80000])
+  % save jpeg
+  save_as_jpeg(data_path_prefix, location, prefix, 'plot', data_type, 100, 'caxis80k');  
+end
+
 end
