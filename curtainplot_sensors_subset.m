@@ -1,4 +1,4 @@
-sensors_subset = {'odo', 'chl', 'bga', 'temp'};
+run set_sensors_subset
 
 [filename, Pathname] = uigetfile('*.log', 'Select the data file', ...
   '/home/jessica/data_em/Logs/puddingstone_20170627/20170627_193227_UTC_0_jessica_mission1_IVER2-135.log');

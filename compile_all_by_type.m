@@ -89,27 +89,16 @@ for idx = 1:size(pudd,1)
     % import the data into a big table,
     % using csvimport (Ashish Sadanandan)
     if ( multiple_folders )
-      log_data = csvimport(fullfile(data_path_prefix,pudd(idx).name,logfiles(idy).name),'delimiter',';');
+      [latitude, longitude, depth, time, date, desired_data_cells] = ...
+        csvimport(fullfile(data_path_prefix,pudd(idx).name,logfiles(idy).name), ...
+        'columns',{'Latitude','Longitude','DFS Depth (m)','Time','Date',type_string}, ...
+        'delimiter',';');
     else
-      log_data = csvimport(fullfile(data_path_prefix,logfiles(idy).name),'delimiter',';');
+      [latitude, longitude, depth, time, date, desired_data_cells] = ...
+        csvimport(fullfile(data_path_prefix,logfiles(idy).name), ...
+        'columns',{'Latitude','Longitude','DFS Depth (m)','Time','Date',type_string}, ...
+        'delimiter',';');
     end
-    
-    % find the columns with lat, lon, ODO
-    lat_idx = find(strcmp(log_data(1,:),'Latitude'),1);
-    lon_idx = find(strcmp(log_data(1,:),'Longitude'),1);
-    desired_data_idx = find(strcmp(log_data(1,:),type_string),1);
-    
-    dep_idx = find(strcmp(log_data(1,:),'DFS Depth (m)'),1);
-    time_idx = find(strcmp(log_data(1,:),'Time'),1);
-    date_idx = find(strcmp(log_data(1,:),'Date'),1);
-    
-    % grab only what we are interesting in, in this case:
-    % note: assuming data are numeric
-    latitude = cell2mat(log_data(2:end,lat_idx));
-    longitude = cell2mat(log_data(2:end, lon_idx));
-    depth = cell2mat(log_data(2:end, dep_idx));
-    time = log_data(2:end, time_idx);
-    date = log_data(2:end, date_idx);
     
     dnum = zeros(length(time),1);
     for ( idx_dnum = 1:length(time) )
@@ -131,18 +120,21 @@ for idx = 1:size(pudd,1)
     
     % convert cells to numbers,
     % but check if there are gaps in the data, and if so, filter out
-    desired_data_cells = log_data(2:end, desired_data_idx);
-    if ( sum(cellfun(@isempty,desired_data_cells)) == 0 )
-      desired_data = cell2mat(desired_data_cells);
+    if ( iscell(desired_data_cells) )      
+      if ( sum(cellfun(@isempty,desired_data_cells)) == 0 )
+        desired_data = cell2mat(desired_data_cells);
+      else
+        cell_mask = ~cellfun(@isempty,desired_data_cells);
+
+        % filter the data
+        latitude = latitude(cell_mask);
+        longitude = longitude(cell_mask);
+        desired_data = cellfun(@str2num,desired_data_cells(cell_mask));
+        depth = depth(cell_mask);
+        time_fixed = time_fixed(cell_mask);
+      end
     else
-      cell_mask = ~cellfun(@isempty,desired_data_cells);
-      
-      % filter the data
-      latitude = latitude(cell_mask);
-      longitude = longitude(cell_mask);
-      desired_data = cellfun(@str2num,desired_data_cells(cell_mask));
-      depth = depth(cell_mask);
-      time_fixed = time_fixed(cell_mask);
+      desired_data = desired_data_cells;
     end
     
     % some files have only 0s in the data, if so, this is likely

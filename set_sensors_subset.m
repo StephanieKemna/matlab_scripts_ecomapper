@@ -1,0 +1,1 @@
+sensors_subset = {'odo', 'chl', 'bga', 'temp'};
