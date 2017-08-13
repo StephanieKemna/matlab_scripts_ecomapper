@@ -10,7 +10,7 @@
 %  b_dst: use Daylight Savings Time (if b_localtime)? (0 or 1, default: 0)
 %
 % nb. this uses EM compass information, which has drift underwater,
-%     ie. there will be jumps on surfacing, and thus the at-depth readings 
+%     ie. there will be jumps on surfacing, and thus the at-depth readings
 %     can be slightly wrong
 %
 % Author: Stephanie Kemna
@@ -23,43 +23,43 @@ function [] = map_data_from_ecomapper_by_type (data_type, mapfile, data_path_pre
 
 %% check arguments, construct bathy file(name)
 if nargin < 1
-    disp('Error! No data_type defined')
-    disp('Options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga')
-    return
+  disp('Error! No data_type defined')
+  disp('Options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga')
+  return
 end
 if nargin < 2
-    mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
+  mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
 end
 if nargin < 3
-    data_path_prefix = '~/data_em/logs/';
+  data_path_prefix = '~/data_em/logs/';
 end
 if nargin < 4
-    location = 'puddingstone';
+  location = 'puddingstone';
 end
 if nargin < 5
-    b_localtime = 0;
+  b_localtime = 0;
 end
 if nargin < 6
-    b_dst = 0;
+  b_dst = 0;
 end
 if nargin < 7
   multiple_folders = 0;
 end
 
 if ( strcmp(data_path_prefix(end),'/') == 0 )
-    data_path_prefix = [data_path_prefix '/']
+  data_path_prefix = [data_path_prefix '/']
 end
 
 filename = [data_path_prefix data_type '_' location '.mat']
 
 % create data file if necessary
 if ~exist(filename,'file')
-    disp('data file non-existent, calling compile_all_by_type');
-    compile_all_by_type(data_type, data_path_prefix, multiple_folders, location, b_localtime, b_dst)
+  disp('data file non-existent, calling compile_all_by_type');
+  compile_all_by_type(data_type, data_path_prefix, multiple_folders, location, b_localtime, b_dst)
 end
 if ~exist(filename,'file')
-    disp('data file still non-existent, not plotting');
-    return;
+  disp('data file still non-existent, not plotting');
+  return;
 end
 
 % prepare labels
@@ -90,20 +90,20 @@ xlabel('Longitude')
 cb = colorbar;
 
 if ( strcmp(data_type,'odo') == 1 )
-    caxis([0 20])
-    load('odo-cm.mat')
-    colormap(cm)
+  caxis([0 20])
+  load('odo-cm.mat')
+  colormap(cm)
 elseif ( strcmp(data_type,'water_depth') == 1 || strcmp(data_type,'water_depth_dvl') == 1 )
-    cx = caxis;
-    if ( strcmp(location,'puddingstone')  == 1 && cx(2) > 25 )
-        caxis([0 25]);
-    end
-%    load('cm_puddingstone_water_depth.mat')
-%    colormap(flipud(cm));
+  cx = caxis;
+  if ( strcmp(location,'puddingstone')  == 1 && cx(2) > 25 )
+    caxis([0 25]);
+  end
+  %    load('cm_puddingstone_water_depth.mat')
+  %    colormap(flipud(cm));
 else
-    if ( min(data(:,3)) ~= max(data(:,3)) )
-        caxis([min(data(:,3)) max(data(:,3))])
-    end
+  if ( min(data(:,3)) ~= max(data(:,3)) )
+    caxis([min(data(:,3)) max(data(:,3))])
+  end
 end
 
 % spring/summer 2017, adaptive missions

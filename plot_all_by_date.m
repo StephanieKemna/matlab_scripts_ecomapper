@@ -20,16 +20,16 @@ function [] = plot_all_by_date(dd, mm, yyyy, data_path_prefix, b_localtime, b_ds
 
 %% input / preparation
 if nargin < 4
-    data_path_prefix = '~/data_em/logs/';
+  data_path_prefix = '~/data_em/logs/';
 end
 if nargin < 5
-    b_localtime = 0;
+  b_localtime = 0;
 end
 if nargin < 6
-    b_dst = 0;
+  b_dst = 0;
 end
 if nargin < 7
-    location = 'puddingstone';
+  location = 'puddingstone';
 end
 disp('Using:')
 disp(['data_path_prefix: ' data_path_prefix])
@@ -39,10 +39,10 @@ disp(['DST (bool): ' num2str(b_dst)])
 
 %% run for all possible data types
 labels = {'odo','chl','water_depth','water_depth_dvl','sp_cond','sal',...
-    'pH','turb','bga','temp','temp2'};
+  'pH','turb','bga','temp','temp2'};
 
 for l_idx = 1:length(labels),
-    disp(labels{l_idx})
-    plot_em_type_date(dd, mm, yyyy, labels{l_idx}, data_path_prefix, location, b_localtime, b_dst);
+  disp(labels{l_idx})
+  plot_em_type_date(dd, mm, yyyy, labels{l_idx}, data_path_prefix, location, b_localtime, b_dst);
 end
 

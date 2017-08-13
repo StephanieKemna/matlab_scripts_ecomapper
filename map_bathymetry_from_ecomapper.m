@@ -7,7 +7,7 @@
 %  default location: 'puddingstone'
 %
 % nb. this uses EM compass information, which has drift underwater,
-%     ie. there will be jumps on surfacing, and thus the at-depth readings 
+%     ie. there will be jumps on surfacing, and thus the at-depth readings
 %     can be slightly wrong
 %
 % Author: Stephanie Kemna
@@ -20,20 +20,20 @@ function [] = map_bathymetry_from_ecomapper (mapfile, data_path_prefix, location
 
 %% check arguments, construct bathy file(name)
 if nargin < 1
-    mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
+  mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
 end
 if nargin < 2
-    data_path_prefix = '~/data_em/logs/';
+  data_path_prefix = '~/data_em/logs/';
 end
 if nargin < 3
-    location = 'puddingstone';
+  location = 'puddingstone';
 end
 filename = [data_path_prefix 'bathy_' location '.mat'];
 
 % create data file if necessary
 if ~exist(filename)
-    disp('bathy file non-existent, calling compile_all_bathy');
-    compile_all_bathy(data_path_prefix, location)
+  disp('bathy file non-existent, calling compile_all_bathy');
+  compile_all_bathy(data_path_prefix, location)
 end
 
 %% prepare figure

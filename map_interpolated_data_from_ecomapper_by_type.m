@@ -8,7 +8,7 @@
 %  default location: 'puddingstone'
 %
 % nb. this uses EM compass information, which has drift underwater,
-%     ie. there will be jumps on surfacing, and thus the at-depth readings 
+%     ie. there will be jumps on surfacing, and thus the at-depth readings
 %     can be slightly wrong
 %
 % Author: Stephanie Kemna
@@ -21,24 +21,24 @@ function [] = map_interpolated_data_from_ecomapper_by_type (data_type, mapfile, 
 
 %% check arguments, construct bathy file(name)
 if nargin < 1
-    disp('Error! No data_type defined')
-    disp('Options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga')
-    disp('Usage: map_interpolated_data_from_ecomapper_by_type (data_type, mapfile, data_path_prefix, location)')
-    disp('For more info, type: help map_interpolated_data_from_ecomapper_by_type')
-    return
+  disp('Error! No data_type defined')
+  disp('Options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga')
+  disp('Usage: map_interpolated_data_from_ecomapper_by_type (data_type, mapfile, data_path_prefix, location)')
+  disp('For more info, type: help map_interpolated_data_from_ecomapper_by_type')
+  return
 end
 if nargin < 2
-    mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
+  mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
 end
 if nargin < 3
-    data_path_prefix = '~/data_em/logs/';
+  data_path_prefix = '~/data_em/logs/';
 end
 if nargin < 4
-    location = 'puddingstone';
+  location = 'puddingstone';
 end
 
 if ( strcmp(data_path_prefix(end),'/') == 0 )
-    data_path_prefix = [data_path_prefix '/']
+  data_path_prefix = [data_path_prefix '/']
 end
 
 filename = [data_path_prefix data_type '_' location '.mat'];
@@ -47,8 +47,8 @@ save_csv = 0;
 
 % create data file if necessary
 if ~exist(filename,'file')
-    disp('data file non-existent, calling compile_all_by_type');
-    compile_all_by_type(data_type, data_path_prefix, location)
+  disp('data file non-existent, calling compile_all_by_type');
+  compile_all_by_type(data_type, data_path_prefix, location)
 end
 
 % prepare labels
@@ -75,8 +75,8 @@ data = data(data(:,1)<R.Lonlim(2),:);
 data = data(data(:,2)>R.Latlim(1),:);
 data = data(data(:,2)<R.Latlim(2),:);
 if ( location == 'puddingstone')
-    % exclude big data errors
-    data = data(data(:,3)<20,:);
+  % exclude big data errors
+  data = data(data(:,3)<20,:);
 end
 
 minLon = min(data(:,1));
@@ -101,11 +101,11 @@ cb = colorbar;
 minDepth = min(data(:,3));
 maxDepth = max(data(:,3));
 if (location == 'puddingstone')
-    caxis([0 20])
-    load('cm_puddingstone_water_depth');
-    colormap(flipud(cm))
+  caxis([0 20])
+  load('cm_puddingstone_water_depth');
+  colormap(flipud(cm))
 else
-    caxis([minDepth maxDepth]);
+  caxis([minDepth maxDepth]);
 end
 set(get(cb,'Title'),'String','Depth (m)');
 

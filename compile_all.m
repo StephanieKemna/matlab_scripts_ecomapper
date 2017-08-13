@@ -19,21 +19,21 @@ function [] = compile_all(data_path_prefix, b_localtime, b_dst, multiple_folders
 
 %% input / preparation
 if nargin < 1
-    disp('ERROR: no input arguments. Options are:')
-    disp('       data_path_prefix, b_localtime, b_dst, multiple_folders, location');
-    return
+  disp('ERROR: no input arguments. Options are:')
+  disp('       data_path_prefix, b_localtime, b_dst, multiple_folders, location');
+  return
 end
 if nargin < 2
-    b_localtime = 0;
+  b_localtime = 0;
 end
 if nargin < 3
-    b_dst = 0;
+  b_dst = 0;
 end
 if nargin < 4
-    multiple_folders = 0;
+  multiple_folders = 0;
 end
 if nargin < 5
-    location = 'puddingstone';
+  location = 'puddingstone';
 end
 disp('Using:')
 disp(['data_path_prefix: ' data_path_prefix])
@@ -44,9 +44,9 @@ disp(['DST (bool): ' num2str(b_dst)])
 
 %% run for all possible data types
 labels = {'odo','chl','water_depth','water_depth_dvl','sp_cond','sal',...
-    'pH','turb','bga','temp','temp2'};
+  'pH','turb','bga','temp','temp2'};
 
 for l_idx = 1:length(labels),
-    compile_all_by_type(labels{l_idx}, data_path_prefix, multiple_folders, location, b_localtime, b_dst);
+  compile_all_by_type(labels{l_idx}, data_path_prefix, multiple_folders, location, b_localtime, b_dst);
 end
 

@@ -21,19 +21,19 @@ function [] = map_all (data_path_prefix, b_localtime, b_dst, mapfile, location, 
 %% input / preparation
 % argument defaults
 if nargin < 1
-    data_path_prefix = '~/data_em/logs/';
+  data_path_prefix = '~/data_em/logs/';
 end
 if nargin < 2
-    b_localtime = 1;
+  b_localtime = 1;
 end
 if nargin < 3
-    b_dst = 1;
+  b_dst = 1;
 end
 if nargin < 4
-    mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
+  mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
 end
 if nargin < 5
-    location = 'puddingstone';
+  location = 'puddingstone';
 end
 if nargin < 6
   pre_2017 = 0;
@@ -48,16 +48,16 @@ disp(['DST (bool): ' num2str(b_dst)]);
 disp(['pre_2017 (bool): ' num2str(pre_2017)])
 
 %% run for all possible data types
-if ( pre_2017 ) 
+if ( pre_2017 )
   labels = {'odo','chl','water_depth','water_depth_dvl','sp_cond','sal',...
     'pH','turb','bga','temp','temp2'};
 else
   labels = {'odo','chl','water_depth','water_depth_dvl','sp_cond','sal',...
-    'pH','bga','temp','temp2'};  
+    'pH','bga','temp','temp2'};
 end
-  
+
 for l_idx = 1:length(labels),
-    map_data_from_ecomapper_by_type(labels{l_idx}, mapfile, data_path_prefix, location, b_localtime, b_dst);
+  map_data_from_ecomapper_by_type(labels{l_idx}, mapfile, data_path_prefix, location, b_localtime, b_dst);
 end
 
 end

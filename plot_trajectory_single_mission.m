@@ -9,8 +9,8 @@ function [] = plot_trajectory_single_mission(logfile_path)
 
 %% input/preparation
 if nargin < 1
-    disp('Error! No logfile_path defined. Exiting.')
-    return
+  disp('Error! No logfile_path defined. Exiting.')
+  return
 end
 
 %% read data

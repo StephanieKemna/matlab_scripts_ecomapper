@@ -27,10 +27,10 @@ kernel_w = diag([0.000237183677861022, 0.00835182525007499].^2);
 % using squared exponential function
 K = zeros(nrSamp);
 for i = 1:nrSamp,
-    waitbar(i/nrSamp,'train');
-    for j = 1:nrSamp,
-        K(i,j) = 123.492562185723^2 * exp(-0.5*(lonlat(i,:)-lonlat(j,:))*inv(kernel_w)*(lonlat(i,:)-lonlat(j,:))');
-    end
+  waitbar(i/nrSamp,'train');
+  for j = 1:nrSamp,
+    K(i,j) = 123.492562185723^2 * exp(-0.5*(lonlat(i,:)-lonlat(j,:))*inv(kernel_w)*(lonlat(i,:)-lonlat(j,:))');
+  end
 end
 % regularization / variance on noise (0.001)
 K = K + 21.754300298601^2 * eye(nrSamp);
@@ -52,19 +52,19 @@ testYsigma = zeros(test_pts_per_d,test_pts_per_d);
 %   and calculate the mean and variance for the resulting predictive
 %   distribution
 for i = 1:test_pts_per_d,
-    waitbar(i/test_pts_per_d,'test');
-    for j = 1:test_pts_per_d,
-        k = zeros(size(lonlat,1),1);
-        for m = 1:size(lonlat,1),
-            % covariance between train and test data pts
-            k(m,1) = 123.492562185723^2 * exp(-0.5*([testGridX(i,j) testGridY(i,j)]-lonlat(m,:))*inv(kernel_w)*([testGridX(i,j) testGridY(i,j)]-lonlat(m,:))');
-        end
-        % covariance between test data pts
-        kstar = 123.492562185723^2;
-        
-        testYmu(i,j) = k'*invK*chl;
-        testYsigma(i,j) = sqrt(kstar - k'*invK*k);
+  waitbar(i/test_pts_per_d,'test');
+  for j = 1:test_pts_per_d,
+    k = zeros(size(lonlat,1),1);
+    for m = 1:size(lonlat,1),
+      % covariance between train and test data pts
+      k(m,1) = 123.492562185723^2 * exp(-0.5*([testGridX(i,j) testGridY(i,j)]-lonlat(m,:))*inv(kernel_w)*([testGridX(i,j) testGridY(i,j)]-lonlat(m,:))');
     end
+    % covariance between test data pts
+    kstar = 123.492562185723^2;
+    
+    testYmu(i,j) = k'*invK*chl;
+    testYsigma(i,j) = sqrt(kstar - k'*invK*k);
+  end
 end
 
 %% plot

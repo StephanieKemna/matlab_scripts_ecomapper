@@ -9,7 +9,7 @@
 %  default location: 'puddingstone'
 %
 % nb. this uses EM compass information, which has drift underwater,
-%     ie. there will be jumps on surfacing, and thus the at-depth readings 
+%     ie. there will be jumps on surfacing, and thus the at-depth readings
 %     can be slightly wrong
 %
 % Author: Stephanie Kemna
@@ -23,32 +23,32 @@ function [] = map_data_from_ecomapper_by_type_and_date (data_type, dd, mm, yyyy,
 %% input/preparation
 % check arguments, construct bathy file(name)
 if nargin < 1
-    disp('Error! No data_type and date defined')
-    disp('Usage: map_data_from_ecomapper_by_type_and_date (data_type, dd, mm, yyyy, mapfile, data_path_prefix, location')
-    disp('Data type options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga')
-    return
+  disp('Error! No data_type and date defined')
+  disp('Usage: map_data_from_ecomapper_by_type_and_date (data_type, dd, mm, yyyy, mapfile, data_path_prefix, location')
+  disp('Data type options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga')
+  return
 end
 if nargin < 4
-    disp('Error! You need to provide a date')
-    disp('Usage: map_data_from_ecomapper_by_type_and_date (data_type, dd, mm, yyyy, mapfile, data_path_prefix, location)')
-    return
+  disp('Error! You need to provide a date')
+  disp('Usage: map_data_from_ecomapper_by_type_and_date (data_type, dd, mm, yyyy, mapfile, data_path_prefix, location)')
+  return
 end
 if nargin < 5
-    mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
+  mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
 end
 if nargin < 6
-    data_path_prefix = '~/data_em/logs/';
+  data_path_prefix = '~/data_em/logs/';
 end
 if nargin < 7
-    location = 'puddingstone';
+  location = 'puddingstone';
 end
 
 filename = [data_path_prefix data_type '_' location '.mat'];
 
 % create data file if necessary
 if ~exist(filename,'file')
-    disp('data file non-existent, calling compile_all_by_type');
-    compile_all_by_type(data_type, data_path_prefix, location)
+  disp('data file non-existent, calling compile_all_by_type');
+  compile_all_by_type(data_type, data_path_prefix, location)
 end
 
 % prepare labels
@@ -76,13 +76,13 @@ date_desired = datestr([num2str(mm) '-' num2str(dd) '-' num2str(yyyy)])
 
 cnt = 0;
 for ( idx = 1:length(desired_data) )
-    % compare the date
-    if ( strncmp(date_desired, datestr(time_datenum(idx)), 11) )
-        cnt = cnt + 1;
-        nw_lon(cnt) = longitude(idx);
-        nw_lat(cnt) = latitude(idx);
-        nw_data(cnt) = desired_data(idx);
-    end
+  % compare the date
+  if ( strncmp(date_desired, datestr(time_datenum(idx)), 11) )
+    cnt = cnt + 1;
+    nw_lon(cnt) = longitude(idx);
+    nw_lat(cnt) = latitude(idx);
+    nw_data(cnt) = desired_data(idx);
+  end
 end
 
 %% plot bathy colors
