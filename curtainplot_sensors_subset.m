@@ -5,5 +5,5 @@ run set_sensors_subset
 file_path = strcat(Pathname, filename);
 
 for  element = 1 : length(sensors_subset)
-  LogFileDataImport(sensors_subset{element}, file_path)
+  curtain_plot_by_type(sensors_subset{element}, file_path)
 end

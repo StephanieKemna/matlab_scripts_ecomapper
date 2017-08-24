@@ -1,4 +1,14 @@
-function[] = LogFileDataImport( data_type, file_path)
+% function[] = curtain_plot_by_type(data_type, file_path)
+%
+function[] = curtain_plot_by_type(data_type, file_path, location, save_figs)
+
+if ( ~exist('save_figs','var') )
+  save_figs = 0;
+end
+if ( ~exist('location','var') )
+  location = 'puddingstone';
+end
+
 % Pop up box with all sensor options
 sensors_cell = {'odo', 'chl', 'water_depth', 'water_depth_dvl', 'sp_cond',...
   'sal', 'pH', 'bga', 'temp', 'temp2'};
@@ -69,12 +79,34 @@ title(type_string)
 xlabel('Longitude')
 ylabel('Latitude')
 zlabel('Depth')
-if  strcmp('chl', data_type) == 1
+if ( strcmp(location,'puddingstone') == 1 && strcmp('chl', data_type) == 1 )
   caxis([0 100])
 end
 
-filename_jpg = strcat(file_path(1:length(file_path)-4), '_curtain_', data_type, '.jpg');
-saveas(gcf, filename_jpg)
+focus_map_curtain
+finish_font(16)
+
+if ( save_figs )
+  data_path_prefix = file_path(1:length(file_path)-4);
+  location = 'elsinore';
+  prefix = '';
+  identifier = 'curtain';
+  save_as_jpeg(data_path_prefix, location, prefix, identifier, data_type, 70)
+end
+
+% testing
+hold on;
+if ( strcmp(location,'puddingstone') == 1 )
+  mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
+elseif ( strcmp(location,'elsinore') == 1 )
+  mapfile='~/Maps/elsinore/elsinore17_crop.tiff';
+else
+  disp('Error, location unknown, exiting');
+  return;
+end
+
+[data_array, ref_object] = geotiffread(mapfile);
+geoshow(data_array,ref_object)
 
 end
 
