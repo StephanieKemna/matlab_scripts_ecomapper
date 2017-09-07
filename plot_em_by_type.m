@@ -112,20 +112,22 @@ set(findall(gcf,'type','text'),'FontSize',16);
 
 if ( save_figs )
   %% save file
-  disp(['Save figures for: ' data_type]);
+  disp(['Save figures for: ' data_type ' 2D']);
   % prefix by date of trial
   first_date = time_datenum(1);
   fd_datestr = datestr(first_date);
   prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
   
   % save jpeg
+  % save_as_jpeg(data_path_prefix, location, prefix, identifier, data_type, 
+  %              resolution, postfix, paper_position)
   save_as_jpeg(data_path_prefix, location, prefix, 'plot', data_type, 100);
   
   % save fig
   save_as_fig(fig_h, data_path_prefix, location, prefix, 'plot', data_type);
   
   % extra plots caxis chl/bga
-  if ( strcmp(data_type,'chl') == 1 )
+  if ( strcmp(data_type,'chl') == 1 && strcmp(location,'puddingstone') == 1 )
     caxis([0 100])
     % save jpeg
     save_as_jpeg(data_path_prefix, location, prefix, 'plot', data_type, 100, 'caxis100');
@@ -133,7 +135,7 @@ if ( save_figs )
     caxis([0 50])
     % save jpeg
     save_as_jpeg(data_path_prefix, location, prefix, 'plot', data_type, 100, 'caxis50');
-  elseif ( strcmp(data_type,'bga') == 1 )
+  elseif ( strcmp(data_type,'bga') == 1 && strcmp(location,'puddingstone') == 1 )
     caxis([0 30000])
     % save jpeg
     save_as_jpeg(data_path_prefix, location, prefix, 'plot', data_type, 100, 'caxis30k');
@@ -141,7 +143,30 @@ if ( save_figs )
     caxis([0 80000])
     % save jpeg
     save_as_jpeg(data_path_prefix, location, prefix, 'plot', data_type, 100, 'caxis80k');
+
+  elseif ( strcmp(data_type,'chl') == 1 && strcmp(location,'elsinore') == 1 )
+    disp('Elsinore Chl')
+
+    caxis([0 50])
+    % save jpeg
+    save_as_jpeg(data_path_prefix, location, prefix, 'plot', data_type, 100, 'caxis50')    
+
+    caxis([0 65])
+    % save jpeg
+    save_as_jpeg(data_path_prefix, location, prefix, 'plot', data_type, 100, 'caxis65')        
+    
+  elseif ( strcmp(data_type,'bga') == 1 && strcmp(location,'elsinore') == 1 )
+    disp('Elsinore BGA')
+    
+    caxis([0 100000])
+    % save jpeg
+    save_as_jpeg(data_path_prefix, location, prefix, 'plot', data_type, 100, 'caxis100k')
+    
+    caxis([0 150000])
+    % save jpeg
+    save_as_jpeg(data_path_prefix, location, prefix, 'plot', data_type, 100, 'caxis150k')
   end
+  
 end
 
 end
