@@ -112,10 +112,13 @@ set(findall(gcf,'type','text'),'FontSize',16);
 
 % change viewing angle slightly to be a bit more based on Lon axis
 view([-30.0 25])
+if ( strcmp(location,'elsinore') == 1 )
+  view([-6 14])
+end
 
 %% save file
 if ( save_figs )
-  disp(['Save figures for: ' data_type]);
+  disp(['Save figures for: ' data_type '3D']);
   % prefix by date of trial
   first_date = time_datenum(1);
   fd_datestr = datestr(first_date);
@@ -128,7 +131,7 @@ if ( save_figs )
   save_as_fig(fig_h, data_path_prefix, location, prefix, '3dplot', data_type);
   
   % extra plots caxis chl/bga
-  if ( strcmp(data_type,'chl') == 1 )
+  if ( strcmp(data_type,'chl') == 1 && strcmp(location,'puddingstone') == 1 )
     caxis([0 100])
     % save jpeg
     save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, 'caxis100', [0 0 16 12])
@@ -136,7 +139,7 @@ if ( save_figs )
     caxis([0 50])
     % save jpeg
     save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, 'caxis50', [0 0 16 12])
-  elseif ( strcmp(data_type,'bga') == 1 )
+  elseif ( strcmp(data_type,'bga') == 1 && strcmp(location,'puddingstone') == 1 )
     caxis([0 30000])
     % save jpeg
     save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, 'caxis30k', [0 0 16 12])
@@ -144,6 +147,27 @@ if ( save_figs )
     caxis([0 80000])
     % save jpeg
     save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, 'caxis80k', [0 0 16 12])
+  elseif ( strcmp(data_type,'chl') == 1 && strcmp(location,'elsinore') == 1 )
+    disp('Elsinore Chl')
+
+    caxis([0 50])
+    % save jpeg
+    save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, 'caxis50', [0 0 16 12])    
+
+    caxis([0 65])
+    % save jpeg
+    save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, 'caxis65', [0 0 16 12])        
+    
+  elseif ( strcmp(data_type,'bga') == 1 && strcmp(location,'elsinore') == 1 )
+    disp('Elsinore BGA')
+    
+    caxis([0 100000])
+    % save jpeg
+    save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, 'caxis100k', [0 0 16 12])
+    
+    caxis([0 150000])
+    % save jpeg
+    save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, 'caxis150k', [0 0 16 12])
   end
   
 end
