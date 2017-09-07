@@ -92,21 +92,66 @@ if ( save_figs )
   prefix = '';
   identifier = 'curtain';
   save_as_jpeg(data_path_prefix, location, prefix, identifier, data_type, 70)
+  save_as_fig(hFig, data_path_prefix, location, prefix, 'curtain', data_type);
 end
 
-% testing
-hold on;
-if ( strcmp(location,'puddingstone') == 1 )
-  mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
-elseif ( strcmp(location,'elsinore') == 1 )
-  mapfile='~/Maps/elsinore/elsinore17_crop.tiff';
-else
-  disp('Error, location unknown, exiting');
-  return;
+% elsinore plots, consistency
+if ( strcmp(location,'elsinore') == 1 && save_figs )
+  
+  if ( strcmp(data_type,'chl') == 1 )
+    caxis([0 50])
+    postfix = 'caxis50';
+    save_as_jpeg(data_path_prefix, location, prefix, identifier, data_type, 70, postfix)
+    
+    caxis([0 65])
+    postfix = 'caxis65';
+    save_as_jpeg(data_path_prefix, location, prefix, identifier, data_type, 70, postfix)
+    
+    caxis([0 90])
+    postfix = 'caxis90';
+    save_as_jpeg(data_path_prefix, location, prefix, identifier, data_type, 70, postfix)
+  
+  elseif ( strcmp(data_type,'bga') == 1 )
+    caxis([0 100000])
+    postfix = 'caxis100k';
+    save_as_jpeg(data_path_prefix, location, prefix, identifier, data_type, 70, postfix)
+    
+    caxis([0 150000])
+    postfix = 'caxis150k';
+    save_as_jpeg(data_path_prefix, location, prefix, identifier, data_type, 70, postfix)
+    
+    caxis([0 260000])
+    postfix = 'caxis260k';
+    save_as_jpeg(data_path_prefix, location, prefix, identifier, data_type, 70, postfix)
+    
+  elseif ( strcmp(data_type,'odo') == 1 )
+    caxis([0 20])
+    load('odo-cm.mat')
+    colormap(cm)
+    postfix = 'caxis20';
+    save_as_jpeg(data_path_prefix, location, prefix, identifier, data_type, 70, postfix)
+    
+  elseif ( strcmp(data_type,'temp') == 1 )
+    caxis([25 34])
+    postfix = 'caxis25-34';
+    save_as_jpeg(data_path_prefix, location, prefix, identifier, data_type, 70, postfix)
+
+  end
 end
 
-[data_array, ref_object] = geotiffread(mapfile);
-geoshow(data_array,ref_object)
+
+% % testing
+% hold on;
+% if ( strcmp(location,'puddingstone') == 1 )
+%   mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
+% elseif ( strcmp(location,'elsinore') == 1 )
+%   mapfile='~/Maps/elsinore/elsinore17_crop.tiff';
+% else
+%   disp('Error, location unknown, exiting');
+%   return;
+% end
+% [data_array, ref_object] = geotiffread(mapfile);
+% geoshow(data_array,ref_object)
 
 end
 
