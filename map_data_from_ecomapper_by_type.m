@@ -1,5 +1,5 @@
 %
-% function [] = map_data_from_ecomapper_by_type (data_type, mapfile, data_path_prefix, location, b_localtime, b_dst, multiple_folders)
+% function [] = map_data_from_ecomapper_by_type (data_type, mapfile, data_path_prefix, location, b_localtime, b_dst, multiple_folders, save_figs)
 %
 % Plot data measured by the EcoMapper onto map (tiff)
 %  data_type, options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga
@@ -19,7 +19,7 @@
 %
 % tested with MatlabR2012a on Ubuntu 16.04
 %
-function [] = map_data_from_ecomapper_by_type (data_type, mapfile, data_path_prefix, location, b_localtime, b_dst, multiple_folders)
+function [] = map_data_from_ecomapper_by_type (data_type, mapfile, data_path_prefix, location, b_localtime, b_dst, multiple_folders, save_figs)
 
 %% check arguments, construct bathy file(name)
 if nargin < 1
@@ -44,6 +44,9 @@ if nargin < 6
 end
 if nargin < 7
   multiple_folders = 0;
+end
+if nargin < 8
+  save_figs = 0;
 end
 
 if ( strcmp(data_path_prefix(end),'/') == 0 )
@@ -117,17 +120,19 @@ set(findall(gcf,'type','text'),'FontSize',16)
 
 focus_map
 
-%% save file
-disp(['Save figures for: ' data_type]);
-% prefix by date of trial
-first_date = data(1,4);
-fd_datestr = datestr(first_date);
-prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
+if ( save_figs )
+  %% save file
+  disp(['Save figures for: ' data_type]);
+  % prefix by date of trial
+  first_date = data(1,4);
+  fd_datestr = datestr(first_date);
+  prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
 
-% % save jpeg
-% save_as_jpeg(data_path_prefix, location, prefix, 'map', data_type, 100);
+  % save jpeg
+  save_as_jpeg(data_path_prefix, location, prefix, 'map', data_type, 100);
 
-% save fig
-save_as_fig(fig_h, data_path_prefix, location, prefix, 'map', data_type);
+  % save fig
+  save_as_fig(fig_h, data_path_prefix, location, prefix, 'map', data_type);
+end
 
 end
