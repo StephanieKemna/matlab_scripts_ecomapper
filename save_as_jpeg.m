@@ -20,12 +20,20 @@ disp('Printing jpeg...')
 set(gcf,'PaperUnits','inches','PaperPosition',paper_position)
 
 % construct filename
-if ( exist('postfix','var') == 1 )
-  filenm = [data_path_prefix '_' location '_' prefix '_' identifier '_' data_type '_' postfix];
+if ( data_path_prefix(length(data_path_prefix)) ~= '/' )
+  if ( exist('postfix','var') == 1 )
+    filenm = [data_path_prefix '_' location '_' prefix '_' identifier '_' data_type '_' postfix];
+  else
+    filenm = [data_path_prefix '_' location '_' prefix '_' identifier '_' data_type];
+  end
 else
-  filenm = [data_path_prefix '_' location '_' prefix '_' identifier '_' data_type];
+  if ( exist('postfix','var') == 1 )
+    filenm = [data_path_prefix location '_' prefix '_' identifier '_' data_type '_' postfix];
+  else
+    filenm = [data_path_prefix location '_' prefix '_' identifier '_' data_type];
+  end
 end
-
+  
 % choose renderer depending on whether or not it is a 3d plot
 if ( strfind(identifier,'3d') > 0 )
   print('-djpeg',res_str,filenm,'-zbuffer')
