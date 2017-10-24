@@ -72,7 +72,7 @@ em_data = data(:,3);
 time_datenum = data(:,4);
 depth = data(:,5);
 
-%% plot
+%% plotclose
 % prep figure
 fig_h = figure('Position',[0 0 1600 1200]);
 hold on
@@ -84,6 +84,8 @@ view(3)
 % finish figure
 c = colorbar;
 set(get(c,'Title'),'String',type_title_string);
+colormap(jet)
+
 if ( strcmp(data_type,'odo') == 1)
   caxis([0 20])
   load('odo-cm.mat')
@@ -125,7 +127,7 @@ if ( save_figs )
   prefix = fd_datestr(1:strfind(fd_datestr,' ')-1);
   
   % save jpeg
-  save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, [0 0 16 12])
+  save_as_jpeg(data_path_prefix, location, prefix, '3dplot', data_type, 70, '', [0 0 16 12])
   
   % save fig
   save_as_fig(fig_h, data_path_prefix, location, prefix, '3dplot', data_type);

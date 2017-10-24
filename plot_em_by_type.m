@@ -78,6 +78,8 @@ scatter(time_datenum, -depth, 30, em_data, 'filled');
 % finish figure
 c = colorbar;
 set(get(c,'Title'),'String',type_title_string);
+colormap(jet)
+
 if ( strcmp(data_type,'odo') == 1)
   caxis([0 20])
   load('odo-cm.mat')

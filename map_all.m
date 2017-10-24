@@ -16,7 +16,7 @@
 %
 % tested with MatlabR2012a on Ubuntu 16.04
 %
-function [] = map_all (data_path_prefix, b_localtime, b_dst, mapfile, location, pre_2017)
+function [] = map_all (data_path_prefix, b_localtime, b_dst, mapfile, location, pre_2017, save_figs)
 
 %% input / preparation
 % argument defaults
@@ -56,8 +56,8 @@ else
     'pH','bga','temp','temp2'};
 end
 
-for l_idx = 1:length(labels),
-  map_data_from_ecomapper_by_type(labels{l_idx}, mapfile, data_path_prefix, location, b_localtime, b_dst);
+for l_idx = 1:length(labels)
+  map_data_from_ecomapper_by_type(labels{l_idx}, mapfile, data_path_prefix, location, b_localtime, b_dst, 0, save_figs);
 end
 
 end

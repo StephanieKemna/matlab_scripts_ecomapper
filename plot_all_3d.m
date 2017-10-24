@@ -16,7 +16,7 @@
 %
 % tested with MatlabR2012a on Ubuntu 16.04
 %
-function [] = plot_all_3d(data_path_prefix, b_localtime, b_dst, location, pre_2017)
+function [] = plot_all_3d(data_path_prefix, b_localtime, b_dst, location, pre_2017, save_figs)
 
 %% input / preparation
 if nargin < 1
@@ -34,6 +34,9 @@ if nargin < 4
 end
 if nargin < 5
   pre_2017 = 0;
+end
+if ( ~exist('save_figs','var') )
+  save_figs = 0;
 end
 disp('Using:')
 disp(['data_path_prefix: ' data_path_prefix])
@@ -53,6 +56,7 @@ end
 
 for l_idx = 1:length(labels),
   disp(labels{l_idx})
-  plot_em_by_type_3d(labels{l_idx}, data_path_prefix, location, b_localtime, b_dst);
+  plot_em_by_type_3d(data_type, data_path_prefix, location, b_localtime, b_dst, save_figs)
+  %plot_em_by_type_3d(labels{l_idx}, data_path_prefix, location, b_localtime, b_dst, 1);
 end
 
