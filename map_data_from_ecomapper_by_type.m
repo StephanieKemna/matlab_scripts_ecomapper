@@ -72,10 +72,11 @@ run em_prepare_labels
 fig_h = figure('Position',[0 0 1400 1200]);
 hold on
 
-% add geo-referenced map as background
-[A, R] = geotiffread(mapfile);
-mapshow(A,R);
-axis([R.Lonlim(1) R.Lonlim(2) R.Latlim(1) R.Latlim(2)])
+% add geo-referenced map as background -- requires Mapping Toolbox
+%addpath('../geotiff_read')
+% [A, R] = geotiffread(mapfile);
+% mapshow(A,R);
+% axis([R.Lonlim(1) R.Lonlim(2) R.Latlim(1) R.Latlim(2)])
 
 %% load data
 disp(['Loading data for: ' data_type]);
@@ -91,7 +92,7 @@ title([location ' EM measured ' type_title_string])
 ylabel('Latitude')
 xlabel('Longitude')
 cb = colorbar;
-
+colormap(jet)
 if ( strcmp(data_type,'odo') == 1 )
   caxis([0 20])
   load('odo-cm.mat')
@@ -110,7 +111,9 @@ else
 end
 
 % spring/summer 2017, adaptive missions
-run adpsampl_area_overlay
+if ( strcmp(location,'puddingstone') )
+  run adpsampl_area_overlay
+end
 
 set(get(cb,'Title'),'String',type_title_string);
 
