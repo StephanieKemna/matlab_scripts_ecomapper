@@ -34,8 +34,8 @@ end
 if nargin < 5
   pre_2017 = 0;
 end
-if nargin < 5
-  pre_2017 = 0;
+if nargin < 6
+  save_figs = 1;
 end
 disp('Using:')
 disp(['data_path_prefix: ' data_path_prefix])
