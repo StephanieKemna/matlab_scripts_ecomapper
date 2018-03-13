@@ -22,7 +22,7 @@ if nargin < 1
   return
 end
 if nargin < 2
-  data_path_prefix = '~/data_em/logs/';
+  data_path_prefix = uigetdir
 end
 if nargin < 3
   location = 'puddingstone';
@@ -49,7 +49,8 @@ end
 filename = [data_path_prefix data_type '_' location '.mat']
 % create data file if necessary
 if ~exist(filename,'file')
-  disp('data file non-existent, calling compile_all_by_type');   compile_all_by_type(data_type, data_path_prefix, 0, location, b_localtime, b_dst)
+  disp('data file non-existent, calling compile_all_by_type');
+  compile_all_by_type(data_type, data_path_prefix, 0, location, b_localtime, b_dst)
 end
 if ~exist(filename,'file')
   disp('data file still non-existent, not plotting');
