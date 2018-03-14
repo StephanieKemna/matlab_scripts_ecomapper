@@ -1,8 +1,17 @@
+%
+% Author: Jessica Gonzalez, Stephanie Kemna
+% Institution: University of Southern California
+% Date: Summer 2017
+%
+% Creates curtainplots for all sensors in the subset, for a single log file
+%
+% tested with MatlabR2018a on Ubuntu 16.04
+%
+
 run set_sensors_subset
 
-[filename, Pathname] = uigetfile('*.log', 'Select the data file', ...
-  '/home/jessica/data_em/Logs/puddingstone_20170627/20170627_193227_UTC_0_jessica_mission1_IVER2-135.log');
-file_path = strcat(Pathname, filename);
+[filename, pathname] = uigetfile('*.log', 'Select a single .log file');
+file_path = strcat(pathname, filename);
 
 for  element = 1 : length(sensors_subset)
   curtain_plot_by_type(sensors_subset{element}, file_path)

@@ -3,14 +3,16 @@
 %
 % Author: Stephanie Kemna
 % Institution: University of Southern California
-% Date: Sep 28, 2016
+% Date: Sep 28, 2016 - Mar 2018
+%
+% tested with MatlabR2018a on Ubuntu 16.04
 %
 function [] = plot_trajectory_single_mission(logfile_path)
 
 %% input/preparation
 if nargin < 1
-  disp('Error! No logfile_path defined. Exiting.')
-  return
+  [filenm, pathnm, ~] = uigetfile('*.log','Select a .log file');
+  logfile_path = strcat(pathnm, filenm);
 end
 
 %% read data
@@ -29,10 +31,9 @@ lon_idx = find(strcmp(log_data(1,:),'Longitude'),1);
 latitude = cell2mat(log_data(2:end,lat_idx));
 longitude = cell2mat(log_data(2:end, lon_idx));
 
-
 %% plot
 % prep figure
-fig_h = figure('Position',[0 0 2000 1200]);
+figure('Position',[0 0 2000 1200]);
 
 % plot the data, colored by level of dissolved oxygen
 plot(longitude, latitude, 'b-', 'LineWidth', 3)
@@ -43,9 +44,5 @@ ylabel('latitude')
 % make all text in the figure to size 16
 set(gca,'FontSize',16);
 set(findall(gcf,'type','text'),'FontSize',16);
-
-%% for lake arrowhead
-axis([-117.185 -117.165 34.259 34.264])
-
 
 end

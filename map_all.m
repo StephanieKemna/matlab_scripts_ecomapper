@@ -14,14 +14,14 @@
 % Institution: University of Southern California
 % Date: sometime 2015, Spring 2016
 %
-% tested with MatlabR2012a on Ubuntu 16.04
+% tested with MatlabR2018a on Ubuntu 16.04
 %
 function [] = map_all (data_path_prefix, b_localtime, b_dst, mapfile, location, pre_2017, save_figs)
 
 %% input / preparation
 % argument defaults
 if nargin < 1
-  data_path_prefix = '~/data_em/logs/';
+  data_path_prefix = uigetdir('~','Select a folder that contains .log files');
 end
 if nargin < 2
   b_localtime = 1;
@@ -39,7 +39,7 @@ if nargin < 6
   pre_2017 = 0;
 end
 if nargin < 7
-  save_figs = 0;
+  save_figs = 1;
 end
 
 disp('Using:')

@@ -13,7 +13,7 @@
 % Institution: University of Southern California
 % Date: Apr 22, 2015 - May 2016 - June 2017
 %
-% tested with MatlabR2012a on Ubuntu 16.04
+% tested with MatlabR2018a on Ubuntu 16.04
 %
 function [] = plot_em_by_type_3d(data_type, data_path_prefix, location, b_localtime, b_dst, save_figs)
 
@@ -21,7 +21,8 @@ function [] = plot_em_by_type_3d(data_type, data_path_prefix, location, b_localt
 if nargin < 1
   % interactive choice of data type, if none given
   data_types = {'odo', 'chl', 'water_depth', 'water_depth_dvl', 'sp_cond', 'sal', 'ph', 'bga', 'temp', 'temp2'};
-  [choice,ok] = listdlg('PromptString', 'Select a file:','SelectionMode', 'single','ListString', data_types);
+  [choice, ~] = listdlg('PromptString', 'Select a file:', ...
+    'SelectionMode', 'single', 'ListString', data_types);
   data_type = data_types{choice};
 end
 if nargin < 2
@@ -40,12 +41,19 @@ end
 if nargin < 6
   save_figs = 1;
 end
+disp('Using:')
+disp(['data_type: ' data_type])
+disp(['data_path_prefix: ' data_path_prefix])
+disp(['location: ' location])
+disp(['localtime (bool): ' num2str(b_localtime)])
+disp(['DST (bool): ' num2str(b_dst)])
+disp(['save_figs (bool): ' num2str(save_figs)])
 
 % prepare labels
 run em_prepare_labels
 
 if ( strcmp(data_path_prefix(end),'/') == 0 )
-  data_path_prefix = [data_path_prefix '/']
+  data_path_prefix = [data_path_prefix '/'];
 end
 
 %% read data
@@ -62,6 +70,7 @@ if ~exist(filename,'file')
 end
 
 load(filename);
+% loads 'data'
 
 % extract data into logical names
 % we utilize the fact that our compile script stores the relevant data

@@ -14,14 +14,14 @@
 % Institution: University of Southern California
 % Date: Spring 2016
 %
-% tested with MatlabR2012a on Ubuntu 16.04
+% tested with MatlabR2018a on Ubuntu 16.04
 %
 function [] = plot_all_3d(data_path_prefix, b_localtime, b_dst, location, pre_2017, save_figs)
 
 %% input / preparation
 if nargin < 1
   % interactive choice of data dir, if none given
-  data_path_prefix = uigetdir;
+  data_path_prefix = uigetdir('~','Select a folder that contains .log files');
 end
 if nargin < 2
   b_localtime = 1;
@@ -54,9 +54,8 @@ else
     'pH','bga','temp','temp2'};  
 end
 
-for l_idx = 1:length(labels),
+for l_idx = 1:length(labels)
   disp(labels{l_idx})
-  plot_em_by_type_3d(data_type, data_path_prefix, location, b_localtime, b_dst, save_figs)
-  %plot_em_by_type_3d(labels{l_idx}, data_path_prefix, location, b_localtime, b_dst, 1);
+  plot_em_by_type_3d(labels{l_idx}, data_path_prefix, location, b_localtime, b_dst, save_figs);
 end
 

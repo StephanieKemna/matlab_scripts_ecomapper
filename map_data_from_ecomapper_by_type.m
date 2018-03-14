@@ -17,7 +17,7 @@
 % Institution: University of Southern California
 % Date: Apr 22, 2015, adapted from map_bathynetry_from_ecomapper
 %
-% tested with MatlabR2012a on Ubuntu 16.04
+% tested with MatlabR2018a on Ubuntu 16.04
 %
 function [] = map_data_from_ecomapper_by_type (data_type, mapfile, data_path_prefix, location, b_localtime, b_dst, multiple_folders, save_figs)
 
@@ -72,6 +72,7 @@ run em_prepare_labels
 fig_h = figure('Position',[0 0 1400 1200]);
 hold on
 
+% remove geotiff read for now, TODO find workaround to not need mapping toolbox
 % add geo-referenced map as background -- requires Mapping Toolbox
 %addpath('../geotiff_read')
 % [A, R] = geotiffread(mapfile);
@@ -102,18 +103,20 @@ elseif ( strcmp(data_type,'water_depth') == 1 || strcmp(data_type,'water_depth_d
   if ( strcmp(location,'puddingstone')  == 1 && cx(2) > 25 )
     caxis([0 25]);
   end
-  %    load('cm_puddingstone_water_depth.mat')
-  %    colormap(flipud(cm));
+  if ( strcmp(location,'puddingstone')  == 1 )
+    load('cm_puddingstone_water_depth.mat')
+    colormap(flipud(cm));
+  end
 else
   if ( min(data(:,3)) ~= max(data(:,3)) )
     caxis([min(data(:,3)) max(data(:,3))])
   end
 end
 
-% spring/summer 2017, adaptive missions
-if ( strcmp(location,'puddingstone') )
-  run adpsampl_area_overlay
-end
+%% spring/summer 2017, adaptive missions
+%if ( strcmp(location,'puddingstone') )
+%  run adpsampl_area_overlay
+%end
 
 set(get(cb,'Title'),'String',type_title_string);
 

@@ -13,6 +13,8 @@
 % Institution: University of Southern California
 % Date: Apr 22, 2015 - May 2016
 %
+% tested with MatlabR2018a on Ubuntu 16.04
+%
 function [] = plot_em_by_type(data_type, data_path_prefix, location, b_localtime, b_dst, save_figs)
 
 %% input/preparation
@@ -36,12 +38,19 @@ end
 if nargin < 6
   save_figs = 1;
 end
+disp('Using:')
+disp(['data_type: ' data_type])
+disp(['data_path_prefix: ' data_path_prefix])
+disp(['location: ' location])
+disp(['localtime (bool): ' num2str(b_localtime)])
+disp(['DST (bool): ' num2str(b_dst)])
+disp(['save_figs (bool): ' num2str(save_figs)])
 
 % prepare labels
 run em_prepare_labels
 
 if ( strcmp(data_path_prefix(end),'/') == 0 )
-  data_path_prefix = [data_path_prefix '/']
+  data_path_prefix = [data_path_prefix '/'];
 end
 
 %% read data
@@ -58,6 +67,7 @@ if ~exist(filename,'file')
 end
 
 load(filename);
+% loads 'data'
 
 % extract data into logical names
 % we utilize the fact that our compile script stores the relevant data

@@ -14,14 +14,14 @@
 % Institution: University of Southern California
 % Date: Spring 2016
 %
-% tested with MatlabR2012a on Ubuntu 16.04
+% tested with MatlabR2018a on Ubuntu 16.04
 %
-function [] = plot_all_2d(data_path_prefix, b_localtime, b_dst, location, pre_2017)
+function [] = plot_all_2d(data_path_prefix, b_localtime, b_dst, location, pre_2017, save_figs)
 
 %% input / preparation
 if nargin < 1
   % interactive choice of data dir, if none given
-  data_path_prefix = uigetdir;
+  data_path_prefix = uigetdir('~','Select a folder that contains .log files');
 end
 if nargin < 2
   b_localtime = 1;
@@ -35,12 +35,16 @@ end
 if nargin < 5
   pre_2017 = 0;
 end
+if nargin < 6
+  save_figs = 0;
+end
 disp('Using:')
 disp(['data_path_prefix: ' data_path_prefix])
 disp(['location: ' location])
 disp(['localtime (bool): ' num2str(b_localtime)])
 disp(['DST (bool): ' num2str(b_dst)])
 disp(['pre_2017 (bool): ' num2str(pre_2017)])
+disp(['save_figs (bool): ' num2str(save_figs)])
 
 %% run for all possible data types
 if ( pre_2017 ) 
@@ -51,8 +55,8 @@ else
     'pH','bga','temp','temp2'};  
 end
 
-for l_idx = 1:length(labels),
+for l_idx = 1:length(labels)
   disp(labels{l_idx})
-  plot_em_by_type(labels{l_idx}, data_path_prefix, location, b_localtime, b_dst, 1);
+  plot_em_by_type(labels{l_idx}, data_path_prefix, location, b_localtime, b_dst, save_figs);
 end
 

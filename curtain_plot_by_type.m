@@ -1,4 +1,12 @@
-% function[] = curtain_plot_by_type(data_type, file_path)
+% function[] = curtain_plot_by_type(data_type, file_path, location, save_figs)
+%
+% Create a curtain plot for a single data type, for a single log file
+%
+% Author: Jessica Gonzalez, Stephanie Kemna
+% Institution: University of Southern California
+% Date: Summer 2017
+%
+% tested with MatlabR2018a on Ubuntu 16.04
 %
 function[] = curtain_plot_by_type(data_type, file_path, location, save_figs)
 
@@ -12,7 +20,7 @@ end
 % Pop up box with all sensor options
 sensors_cell = {'odo', 'chl', 'water_depth', 'water_depth_dvl', 'sp_cond',...
   'sal', 'pH', 'bga', 'temp', 'temp2'};
-if nargin == 0
+if ( ~exist('data_type','var') )
   [dialogue_box] = listdlg('PromptString', 'Select a file:', 'SelectionMode',...
     'single', 'ListString', sensors_cell);
   data_type = sensors_cell{dialogue_box};
@@ -21,10 +29,9 @@ end
 run em_prepare_labels
 
 % Importing file into matlab cell
-if nargin < 2
-  [filename, Pathname] = uigetfile('*.log', 'Select the data file', ...
-    '/home/jessica/data_em/Logs/puddingstone_20170627/20170627_193227_UTC_0_jessica_mission1_IVER2-135.log');
-  file_path = strcat(Pathname, filename);
+if ( ~exist('file_path','var') )
+  [filename, pathname] = uigetfile('*.log', 'Select the data file');
+  file_path = strcat(pathname, filename);
 end
 
 % Changing the .log file into .mat, while specifying data_type
@@ -139,8 +146,7 @@ if ( strcmp(location,'elsinore') == 1 && save_figs )
   end
 end
 
-
-% % testing
+% % testing, trying to get map underneath
 % hold on;
 % if ( strcmp(location,'puddingstone') == 1 )
 %   mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
