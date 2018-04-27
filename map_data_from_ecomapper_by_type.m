@@ -17,7 +17,7 @@
 % Institution: University of Southern California
 % Date: Apr 22, 2015, adapted from map_bathynetry_from_ecomapper
 %
-% tested with MatlabR2018a on Ubuntu 16.04
+% last tested with MatlabR2018a (without mapping toolbox) on Ubuntu 16.04
 %
 function [] = map_data_from_ecomapper_by_type (data_type, mapfile, data_path_prefix, location, b_localtime, b_dst, multiple_folders, save_figs)
 
@@ -72,12 +72,12 @@ run em_prepare_labels
 fig_h = figure('Position',[0 0 1400 1200]);
 hold on
 
-% remove geotiff read for now, TODO find workaround to not need mapping toolbox
-% add geo-referenced map as background -- requires Mapping Toolbox
-%addpath('../geotiff_read')
-% [A, R] = geotiffread(mapfile);
-% mapshow(A,R);
-% axis([R.Lonlim(1) R.Lonlim(2) R.Latlim(1) R.Latlim(2)])
+if ( license('test','mapping_toolbox') )
+  % add geo-referenced map as background -- requires Mapping Toolbox
+  [A, R] = geotiffread(mapfile);
+  mapshow(A,R);
+  axis([R.Lonlim(1) R.Lonlim(2) R.Latlim(1) R.Latlim(2)])
+end
 
 %% load data
 disp(['Loading data for: ' data_type]);
@@ -113,10 +113,10 @@ else
   end
 end
 
-%% spring/summer 2017, adaptive missions
-%if ( strcmp(location,'puddingstone') )
+% % spring/summer 2017, adaptive missions
+% if ( strcmp(location,'puddingstone') )
 %  run adpsampl_area_overlay
-%end
+% end
 
 set(get(cb,'Title'),'String',type_title_string);
 

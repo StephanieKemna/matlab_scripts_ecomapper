@@ -14,36 +14,43 @@
 % Institution: University of Southern California
 % Date: Initial work in 2013, finished Dec 30, 2014
 %
-% tested with MatlabR2012a on Ubuntu 14.04
+% last tested with MatlabR2018a (without mapping toolbox) on Ubuntu 16.04
 %
-function [] = map_bathymetry_from_ecomapper (mapfile, data_path_prefix, location)
+function [] = map_bathymetry_from_ecomapper (data_path_prefix, mapfile, location)
 
 %% check arguments, construct bathy file(name)
 if nargin < 1
-  mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
+  data_path_prefix = '~/data_em/logs/';
 end
 if nargin < 2
-  data_path_prefix = '~/data_em/logs/';
+  mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
 end
 if nargin < 3
   location = 'puddingstone';
 end
-filename = [data_path_prefix 'bathy_' location '.mat'];
+
+if ( strcmp(data_path_prefix(end),'/') == 0 )
+  data_path_prefix = [data_path_prefix '/']
+end
+
+filename = [data_path_prefix 'water_depth_' location '.mat'];
 
 % create data file if necessary
 if ~exist(filename)
   disp('bathy file non-existent, calling compile_all_bathy');
-  compile_all_bathy(data_path_prefix, location)
+  compile_all_by_type('water_depth', data_path_prefix, 0, location)
 end
 
 %% prepare figure
 figure('Position',[0 0 1400 1200])
 hold on
 
-% add geo-referenced map as background
-[A, R] = geotiffread(mapfile);
-mapshow(A,R);
-axis([R.Lonlim(1) R.Lonlim(2) R.Latlim(1) R.Latlim(2)])
+if ( license('test','mapping_toolbox') )
+  % add geo-referenced map as background
+  [A, R] = geotiffread(mapfile);
+  mapshow(A,R);
+  axis([R.Lonlim(1) R.Lonlim(2) R.Latlim(1) R.Latlim(2)])
+end
 
 %% load data
 load(filename);
@@ -60,6 +67,17 @@ minDepth = min(data(:,3));
 maxDepth = max(data(:,3));
 caxis([minDepth maxDepth]);
 set(get(cb,'Title'),'String','Depth (m)');
+
+% flip colors to have blue be deep, limit 25m for Puddingstone
+cx = caxis;
+if ( strcmp(location,'puddingstone')  == 1 && cx(2) > 25 )
+  caxis([0 25]);
+end
+if ( strcmp(location,'puddingstone')  == 1 )
+  load('cm_puddingstone_water_depth.mat')
+  colormap(flipud(cm));
+end
+
 % make all text in the figure to size 16
 set(gca,'FontSize',16)
 set(findall(gcf,'type','text'),'FontSize',16)

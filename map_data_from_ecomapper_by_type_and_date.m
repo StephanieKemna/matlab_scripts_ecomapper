@@ -16,7 +16,7 @@
 % Institution: University of Southern California
 % Date: Apr 22, 2015, adapted from map_bathynetry_from_ecomapper
 %
-% tested with MatlabR2012a on Ubuntu 14.04
+% last tested with MatlabR2012a (without mapping toolbox) on Ubuntu 16.04
 %
 function [] = map_data_from_ecomapper_by_type_and_date (data_type, dd, mm, yyyy, mapfile, data_path_prefix, location)
 
@@ -43,6 +43,10 @@ if nargin < 7
   location = 'puddingstone';
 end
 
+if ( strcmp(data_path_prefix(end),'/') == 0 )
+  data_path_prefix = [data_path_prefix '/'];
+end
+
 filename = [data_path_prefix data_type '_' location '.mat'];
 
 % create data file if necessary
@@ -58,11 +62,13 @@ run em_prepare_labels
 figure('Position',[0 0 1400 1200])
 hold on
 
-% add geo-referenced map as background
-[A, R] = geotiffread(mapfile);
-mapshow(A,R);
-axis([R.Lonlim(1) R.Lonlim(2) R.Latlim(1) R.Latlim(2)])
-
+if ( license('test','mapping_toolbox') )
+  % add geo-referenced map as background
+  [A, R] = geotiffread(mapfile);
+  mapshow(A,R);
+  axis([R.Lonlim(1) R.Lonlim(2) R.Latlim(1) R.Latlim(2)])
+end
+  
 %% load data
 load(filename);
 longitude = data(:,1);

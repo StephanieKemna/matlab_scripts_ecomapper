@@ -1,3 +1,4 @@
+
 %
 % function [] = compile_all_by_type(data_type, folder, data_path_prefix, location, b_localtime, b_dst)
 % Create a <type>.mat file from grabbing all data from EcoMapper log files
@@ -65,7 +66,7 @@ run em_prepare_labels
 %% read data
 % using csvimport (Ashish Sadanandan)
 % get it from www.mathworks.com/matlabcentral/fileexchange/23573-csvimport
-addpath('../csvimport/');
+addpath('csvimport');
 
 cnt = 0;
 % get all subfolders

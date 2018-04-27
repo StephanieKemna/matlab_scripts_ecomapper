@@ -15,9 +15,9 @@
 % Institution: University of Southern California
 % Date: Dec 8, 2015, adapted from map_interpolated_bathymetry_from_ecomapper
 %
-% tested with MatlabR2012a on Ubuntu 14.04
+% last tested with MatlabR2018a (without mapping toolbox) on Ubuntu 16.04
 %
-function [] = map_interpolated_data_from_ecomapper_by_type (data_type, mapfile, data_path_prefix, location)
+function [] = map_interpolated_data_from_ecomapper_by_type (data_type, data_path_prefix, mapfile, location)
 
 %% check arguments, construct bathy file(name)
 if nargin < 1
@@ -28,10 +28,10 @@ if nargin < 1
   return
 end
 if nargin < 2
-  mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
+  data_path_prefix = '~/data_em/logs/';
 end
 if nargin < 3
-  data_path_prefix = '~/data_em/logs/';
+  mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
 end
 if nargin < 4
   location = 'puddingstone';
@@ -48,7 +48,7 @@ save_csv = 0;
 % create data file if necessary
 if ~exist(filename,'file')
   disp('data file non-existent, calling compile_all_by_type');
-  compile_all_by_type(data_type, data_path_prefix, location)
+  compile_all_by_type(data_type, data_path_prefix, 0, location)
 end
 
 % prepare labels
@@ -58,22 +58,27 @@ run em_prepare_labels
 figure('Position',[0 0 1400 1200])
 hold on
 
-% add geo-referenced map as background
-[A, R] = geotiffread(mapfile);
-mapshow(A,R);
-axis([R.Lonlim(1) R.Lonlim(2) R.Latlim(1) R.Latlim(2)])
+if ( license('test','mapping_toolbox') )
+  % add geo-referenced map as background
+  [A, R] = geotiffread(mapfile);
+  mapshow(A,R);
+  axis([R.Lonlim(1) R.Lonlim(2) R.Latlim(1) R.Latlim(2)])
+end
 
 %% load data
 load(filename);
 
 %% interpolate
 
-% note, to exclude erroneous data, limit to the map we are making
-% exclude out of bounds data
-data = data(data(:,1)>R.Lonlim(1),:);
-data = data(data(:,1)<R.Lonlim(2),:);
-data = data(data(:,2)>R.Latlim(1),:);
-data = data(data(:,2)<R.Latlim(2),:);
+if ( license('test','mapping_toolbox') )
+  % note, to exclude erroneous data, limit to the map we are making
+  % exclude out of bounds data
+  data = data(data(:,1)>R.Lonlim(1),:);
+  data = data(data(:,1)<R.Lonlim(2),:);
+  data = data(data(:,2)>R.Latlim(1),:);
+  data = data(data(:,2)<R.Latlim(2),:);
+end
+
 if ( location == 'puddingstone')
   % exclude big data errors
   data = data(data(:,3)<20,:);
@@ -86,7 +91,7 @@ maxLat = max(data(:,2));
 [X, Y] = meshgrid(linspace(minLon,maxLon,300), linspace(minLat,maxLat,300));
 
 %             longitude, latitude,  depth
-zi = griddata(data(:,1), data(:,2), data(:,3), X, Y);
+zi = griddata(data(:,1), data(:,2), data(:,3), X, Y, 'natural');
 
 %% plot bathy colors
 %scatter( data(:,1), data(:,2), 10, data(:,3), 'filled');

@@ -5,7 +5,7 @@
 % Institution: University of Southern California
 % Date: Sep 28, 2016 - Mar 2018
 %
-% tested with MatlabR2018a on Ubuntu 16.04
+% last tested with MatlabR2018a on Ubuntu 16.04
 %
 function [] = plot_trajectory_single_mission(logfile_path)
 
