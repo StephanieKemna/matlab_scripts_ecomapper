@@ -31,9 +31,8 @@ and change the data_prefix_path to the specific log file.
 (Haven't tested this in a while.. :) )
 
 ## creating interpolated bathymetry plots, x: longitude, y: latitude, color: depth
-To create an interpolated bathymetry plot, run
-`map_interpolated_data_from_ecomapper_by_type` using type: `water_depth`.
-E.g.:
+To create an interpolated data plot, run
+`map_interpolated_data_from_ecomapper_by_type` using any data type, for example `water_depth`:
 ```
 map_interpolated_data_from_ecomapper_by_type('water_depth','~/data_em/puddingstone_20180419')
 ```

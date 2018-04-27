@@ -27,7 +27,7 @@ if nargin < 1
 end
 if nargin < 2
   % interactive choice of data dir, if none given
-  data_path_prefix = uigetdir;
+  data_path_prefix = uigetdir('~','Select a folder that contains .log files');
 end
 if nargin < 3
   location = 'puddingstone';

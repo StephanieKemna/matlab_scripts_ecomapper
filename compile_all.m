@@ -23,7 +23,7 @@ run compile_scripts_read_params
 labels = {'odo','chl','water_depth','water_depth_dvl','sp_cond','sal',...
   'pH','turb','bga','temp','temp2'};
 
-for l_idx = 1:length(labels),
+for l_idx = 1:length(labels)
   compile_all_by_type(labels{l_idx}, data_path_prefix, multiple_folders, location, b_localtime, b_dst);
 end
 

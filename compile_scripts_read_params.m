@@ -1,20 +1,21 @@
 %% input / preparation
-if nargin < 1
+if ~exist('data_path_prefix','var')
   % if no folder specified, ask the user
-  data_path_prefix = uigetdir;
+  data_path_prefix = uigetdir('~','Select a folder that contains .log files');
 end
-if nargin < 2
+if ~exist('b_localtime','var')
   b_localtime = 1;
 end
-if nargin < 3
+if ~exist('b_dst','var')
   b_dst = 1;
 end
-if nargin < 4
+if ~exist('multiple_folders','var')
   multiple_folders = 0;
 end
-if nargin < 5
+if ~exist('location','var')
   location = 'puddingstone';
 end
+% report settings
 disp('Using:')
 disp(['data_path_prefix: ' data_path_prefix])
 disp(['multiple folders? ' num2str(multiple_folders)])
