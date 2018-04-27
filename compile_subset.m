@@ -13,7 +13,7 @@
 % Institution: University of Southern California
 % Date: Spring 2016 - Summer 2017
 %
-% tested with MatlabR2012a on Ubuntu 16.04
+% last tested with MatlabR2018a on Ubuntu 16.04
 %
 function [] = compile_subset(data_path_prefix, b_localtime, b_dst, multiple_folders, location)
 

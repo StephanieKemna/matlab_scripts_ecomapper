@@ -1,9 +1,9 @@
 %
-% function [] = map_puddingstone_depth_interpolated (mapfile, data_path_prefix, location)
+% function [] = map_bathymetry_from_ecomapper (data_path_prefix, mapfile, location)
 % Plot an interpolated grid of the bathymetry data measured by the
 % EcoMapper
-%  default mapfile: '~/Maps/puddingstone/puddingstone_dam_extended.tiff'
 %  default data_path_prefix: '~/data_em/logs/'
+%  default mapfile: '~/Maps/puddingstone/puddingstone_dam_extended.tiff'
 %  default location: 'puddingstone'
 %
 % nb. this uses EM compass information, which has drift underwater,

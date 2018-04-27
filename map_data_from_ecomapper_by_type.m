@@ -8,6 +8,8 @@
 %  default location: 'puddingstone'
 %  b_localtime: convert UTC to local time? (0 or 1, default: 0)
 %  b_dst: use Daylight Savings Time (if b_localtime)? (0 or 1, default: 0)
+%  multiple_folders: collect data across multiple folders? (0 or 1, default: 0)
+%  save_figs: whether or not to store a .jpeg and .fig (default: 1)
 %
 % nb. this uses EM compass information, which has drift underwater,
 %     ie. there will be jumps on surfacing, and thus the at-depth readings

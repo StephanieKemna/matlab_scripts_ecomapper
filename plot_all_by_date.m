@@ -9,7 +9,6 @@
 %  multiple_folders: find log files in multiple mission folders? (0 or 1, default: 0)
 %  location: experiment location, default: 'puddingstone'
 %
-%
 % Author: Stephanie Kemna
 % Institution: University of Southern California
 % Date: Spring 2016

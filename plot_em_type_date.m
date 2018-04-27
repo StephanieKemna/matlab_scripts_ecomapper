@@ -1,11 +1,11 @@
 %
-% function [] = plot_em_type_date(dd, mm, yyyy, data_type, data_path_prefix, location)
+% function [] = plot_em_type_date(dd, mm, yyyy, data_type, data_path_prefix, location, b_localtime, b_dst)
 %   function to plot data from mat file,
 %     create mat file from EcoMapper log file using compile_all_type.m
 %   choosing a specific date (specify via dd, mm, yyyy)
 %  data_type, options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga
 %  default data_path_prefix: '~/data_em/logs/'
-%  default location: 'puddingstone
+%  default location: 'puddingstone'
 %
 % Author: Stephanie Kemna
 % Institution: University of Southern California

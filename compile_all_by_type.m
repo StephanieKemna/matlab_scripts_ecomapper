@@ -15,7 +15,7 @@
 % Institution: University of Southern California
 % Date: Apr 22, 2015 - May 2016
 %
-% tested with MatlabR2012a on Ubuntu 14.04
+% last tested with MatlabR2018a on Ubuntu 14.04
 %
 function [] = compile_all_by_type(data_type, data_path_prefix, multiple_folders, location, b_localtime, b_dst)
 

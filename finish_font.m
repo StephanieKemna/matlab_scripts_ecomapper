@@ -1,7 +1,7 @@
 % function [] = finish_font(fsize)
 %
 % this is a helper function to increase font size on plots to the size
-% given, default 26
+% given, default 16
 %
 % Stephanie Kemna
 % University of Southern California

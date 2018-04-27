@@ -1,10 +1,9 @@
 %
-% function [] = map_interpolated_data_from_ecomapper_by_type (data_type, mapfile, data_path_prefix, location)
-% Plot an interpolated grid of the specified data measured by the
-% EcoMapper
+% function [] = map_interpolated_data_from_ecomapper_by_type (data_type, data_path_prefix, mapfile, location)
+% Plot an interpolated grid of the specified data measured by the EcoMapper
 %  data_type, options are: odo, chl, water_depth, water_depth_dvl, sp_cond, sal, pH, bga
-%  default mapfile: '~/Maps/puddingstone/puddingstone_dam_extended.tiff'
 %  default data_path_prefix: '~/data_em/logs/'
+%  default mapfile: '~/Maps/puddingstone/puddingstone_dam_extended.tiff'
 %  default location: 'puddingstone'
 %
 % nb. this uses EM compass information, which has drift underwater,

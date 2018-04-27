@@ -7,7 +7,7 @@
 %  default location: 'puddingstone
 %  b_localtime: convert UTC to local time? (0 or 1, default: 0)
 %  b_dst: use Daylight Savings Time (if b_localtime)? (0 or 1, default: 0)
-%  save_figs: whether or not to save all plots as jpeg and fig (0 or 1, default: 1)
+%  save_figs: whether or not to store a .jpeg and .fig (default: 1)
 %
 % Author: Stephanie Kemna
 % Institution: University of Southern California

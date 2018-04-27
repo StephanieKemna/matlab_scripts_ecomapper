@@ -1,14 +1,15 @@
 %
-% function [] = map_all (data_path_prefix, b_localtime, b_dst, mapfile, location, pre_2017)
+% function [] = map_all (data_path_prefix, b_localtime, b_dst, mapfile, location, pre_2017, save_figs)
 %
 %  data_path_prefix: no default; define where to search for log files
 %                   (day/mission folder)
 %  b_localtime: convert UTC to local time? (0 or 1, default: 0)
 %  b_dst: use Daylight Savings Time (if b_localtime)? (0 or 1, default: 0)
-%  multiple_folders: find log files in multiple mission folders? (0 or 1, default: 0)
-%  location: experiment location, default: 'puddingstone'
+%  mapfile: path to a geotiff on top of which the data can be plotted
+%           (default: '~/Maps/puddingstone/puddingstone_dam_extended.tiff')
+%  location: experiment location (default: 'puddingstone')
 %  pre_2017: turbidity sensor only pre 2017 (0 or 1, default: 0)
-%
+%  save_figs: whether or not to store a .jpeg and .fig (default: 1)
 %
 % Author: Stephanie Kemna
 % Institution: University of Southern California
