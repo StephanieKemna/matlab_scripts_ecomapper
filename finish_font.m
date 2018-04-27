@@ -10,7 +10,7 @@
 function [] = finish_font(fsize)
 
 if nargin < 1
-    fsize = 26;
+  fsize = 16;
 end
 
 % make all text in the figure to size 

@@ -98,8 +98,7 @@ if ( cnt > 0 )
   h = title(['EM ' data_type ' vs depth and time for: ' date_desired]);
   set(h,'interpreter','none')
   
-  set(gca,'FontSize',16);
-  set(findall(gcf,'type','text'),'FontSize',16);
+  finish_font
   
   %% save file
   disp(['Save figures for: ' data_type]);

@@ -4,7 +4,7 @@
 % Institution: University of Southern California
 % Date: June 29, 2017
 %
-% tested with MatlabR2012a on Ubuntu 16.04
+% last tested with MatlabR2018a on Ubuntu 16.04
 %
 function [] = save_as_jpeg(data_path_prefix, location, prefix, identifier, data_type, resolution, postfix, paper_position)
 

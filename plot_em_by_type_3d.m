@@ -118,8 +118,7 @@ h = title(filename(1:end-4));
 set(h,'interpreter','none')
 
 % make all text in the figure to size 16
-set(gca,'FontSize',16);
-set(findall(gcf,'type','text'),'FontSize',16);
+finish_font
 
 % change viewing angle slightly to be a bit more based on Lon axis
 view([-30.0 25])

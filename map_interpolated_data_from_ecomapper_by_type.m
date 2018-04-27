@@ -115,8 +115,7 @@ end
 set(get(cb,'Title'),'String','Depth (m)');
 
 % make all text in the figure to size 16
-set(gca,'FontSize',16)
-set(findall(gcf,'type','text'),'FontSize',16)
+finish_font
 
 %% other save methods
 

@@ -10,10 +10,10 @@
 %
 function[] = curtain_plot_by_type(data_type, file_path, location, save_figs)
 
-if ( ~exist('save_figs','var') )
+if ~exist('save_figs','var')
   save_figs = 0;
 end
-if ( ~exist('location','var') )
+if ~exist('location','var')
   location = 'puddingstone';
 end
 
@@ -29,7 +29,7 @@ end
 run em_prepare_labels
 
 % Importing file into matlab cell
-if ( ~exist('file_path','var') )
+if ~exist('file_path','var')
   [filename, pathname] = uigetfile('*.log', 'Select the data file');
   file_path = strcat(pathname, filename);
 end
@@ -77,7 +77,7 @@ else
 end
 
 % Plot the completed 3D slice/graph
-hFig= figure;
+hFig = figure;
 set(hFig, 'Position', [0 0 1000 1000])
 three_dimensional_slice = surf(lon_copies, lat_copies, -depth_copies, grid_data_values);
 shading interp
@@ -145,19 +145,6 @@ if ( strcmp(location,'elsinore') == 1 && save_figs )
 
   end
 end
-
-% % testing, trying to get map underneath
-% hold on;
-% if ( strcmp(location,'puddingstone') == 1 )
-%   mapfile = '~/Maps/puddingstone/puddingstone_dam_extended.tiff';
-% elseif ( strcmp(location,'elsinore') == 1 )
-%   mapfile='~/Maps/elsinore/elsinore17_crop.tiff';
-% else
-%   disp('Error, location unknown, exiting');
-%   return;
-% end
-% [data_array, ref_object] = geotiffread(mapfile);
-% geoshow(data_array,ref_object)
 
 end
 

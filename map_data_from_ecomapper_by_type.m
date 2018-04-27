@@ -121,8 +121,7 @@ end
 set(get(cb,'Title'),'String',type_title_string);
 
 % make all text in the figure to size 16
-set(gca,'FontSize',16)
-set(findall(gcf,'type','text'),'FontSize',16)
+finish_font
 
 focus_map
 
